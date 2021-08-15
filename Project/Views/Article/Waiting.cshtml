@@ -1,0 +1,62 @@
+﻿@model IPagedList<Project.Models.baiviet>
+
+@{
+    ViewBag.Title = "Waiting";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="panel-title">Bài viết đang chờ kiểm duyệt trước khi đăng lên trang chủ</div>
+<table class="table">
+    <tr>
+        <th>
+            Tên
+        </th>
+        <th>
+            Ngày tạo
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Tác giả
+        </th>
+        <th>
+            Thumbnail
+        </th>
+        <th>Panel</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("View", "Article", new { id = item.aid })">@item.name</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.day)
+            </td>
+            <td>
+                <font color="red">Đang chờ duyệt</font>
+            </td>
+            <td>
+                <a href="@Url.Action("Index","User",new {id=item.uid })">@item.user</a>
+            </td>
+            <td>
+                <img style="width:100px;" src="~/images/thumbnail/@Url.Content(item.img)" />
+            </td>
+            <td>
+                <a href="@Url.Action("Accept", "Article", new { id = @item.aid })" class="btn btn-success">Duyệt</a>
+                <a href="@Url.Action("View", "Article", new { id = @item.aid })" class="btn btn-warning">Xem</a>
+                <a href="@Url.Action("DelArticleWaiting","Article",new {id=@item.aid })" class="btn btn-danger" onclick='return confirm("Bạn có chắc muốn xóa bài viết này!");'>Xóa</a>
+            </td>
+        </tr>
+    }
+</table>
+@if (Model.Count() == 0)
+{
+    <div class="empty">Danh sách trống !</div>
+}
+
+@Html.PagedListPager(Model, page => Url.Action("Waiting", "Article", new { page }))

@@ -1,0 +1,309 @@
+﻿@model Project.Models.baiviet
+
+@{
+    ViewBag.Title = Model.name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    HttpCookie cookie = HttpContext.Current.Request.Cookies["Language"];
+    if (cookie != null && cookie.Value == "en-US")
+    {
+           ViewBag.Title = Model.name_en;
+    }
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div class="fit">
+    <div class="col-duy-8">
+        <div class="article">
+            <div class="article-thumbnail">
+                <img src="~/images/thumbnail/@Url.Content(Model.img)" />
+            </div>
+            <div class="article-title">
+                @{
+                    if (cookie != null && cookie.Value == "en-US")
+                    {
+                        <h1>@Model.name_en</h1>
+                    }
+                    else
+                    {
+                        <h1>@Model.name</h1>
+                    }
+                }
+            </div>
+            <div class="article-infor">
+                <a href="@Url.Action("Category","Home",new {id=Model.cid })" class="category-name">
+                    @{
+                        if (cookie != null && cookie.Value == "en-US")
+                        {
+                            @Model.cate_en
+                        }
+                        else
+                        {
+                            @Model.cate
+                        }
+                    }
+                </a>
+                <span class="times">@Model.day</span><span class="times">- @Project.Resources.MyText.View : @Model.view</span>
+                @if (User.IsInRole("admin") || User.IsInRole("btv"))
+                {
+                    <a href="@Url.Action("DelArticle","Article",new {id=Model.aid })" onclick="return confirm('Bạn có chắc là muốn xóa bài viết này ?')"><img src="~/icon/xoa.png" width="16" /></a>
+                    <a href="@Url.Action("Edit","Article",new {id=Model.aid })"><img src="~/icon/edit.png" width="16" /></a>
+                }
+                <p>@Project.Resources.MyText.By @Html.ActionLink(@Model.user, "Index", "User", new { id = Model.uid }, null)</p>
+            </div>
+            <!-- infor -->
+            <div class="article-content">
+                @{
+                    if (cookie != null && cookie.Value == "en-US")
+                    {
+                        @Html.Raw(Model.content_en)
+                    }
+                    else
+                    {
+                        @Html.Raw(Model.content)
+                }
+                }
+            </div>
+            <!-- content post -->
+            <div class="article-tags">
+                @{
+                    string[] tokens = Model.tags.Split(',');
+                    foreach (var item in tokens)
+                    {
+                        <a href="@Url.Action("Tag","Article",new {tags=@item })" class="tags">@item</a>
+                    }
+                }
+            </div>
+            <!-- tags -->
+            <div class="feeling">
+                <h2>@Project.Resources.MyText.Feeling</h2>
+                <div class="flex" id="loadCamxuc">
+                    <div class="feeling-item" data-id="heart">
+                        <span class="feeling-icon">
+                            <img src="~/icon/heart.svg" alt="" title="Thích quá đi">
+                        </span>
+                        <span class="feeling-number" id="heart">@{ if (ViewData["heart"] != null)
+                            { @ViewData["heart"] } }</span>
+                    </div>
+                    <!-- feeling item -->
+                    <div class="feeling-item" data-id="smile">
+                        <span class="feeling-icon">
+                            <img src="~/icon/smile.svg" alt="" title="Cười ỉa">
+                        </span>
+                        <span class="feeling-number" id="smile">@{ if (ViewData["heart"] != null)
+                            { @ViewData["smile"] } }</span>
+                    </div>
+                    <!-- feeling item -->
+                    <div class="feeling-item" data-id="angry">
+                        <span class="feeling-icon">
+                            <img src="~/icon/angry.svg" alt="" title="Đang sắp điên">
+                        </span>
+                        <span class="feeling-number" id="angry">@{ if (ViewData["heart"] != null)
+                            { @ViewData["angry"] } }</span>
+                    </div>
+                    <!-- feeling item -->
+                    <div class="feeling-item" data-id="cry">
+                        <span class="feeling-icon">
+                            <img src="~/icon/sad.svg" alt="" title="Muốn khóc ghê">
+                        </span>
+                        <span class="feeling-number" id="cry">@{ if (ViewData["heart"] != null)
+                            { @ViewData["cry"] } }</span>
+                    </div>
+                    <!-- feeling item -->
+                    <div class="feeling-item" data-id="scared">
+                        <span class="feeling-icon">
+                            <img src="~/icon/omg.svg" alt="" title="Dễ sợ chưa">
+                        </span>
+                        <span class="feeling-number" id="scared">@{ if (ViewData["heart"] != null)
+                            { @ViewData["scared"] } }</span>
+                    </div>
+                    <!-- feeling item -->
+                </div>
+                <!-- flex div -->
+            </div>
+            <!-- feeling of user -->
+            <div class="article-share">
+                <h2>@Project.Resources.MyText.Share</h2>
+                <a href="http://www.facebook.com/sharer/sharer.php?u=@Request.Url.OriginalString&t=@Model.name" target="_blank" title="Share on Facebook" class="item-share">
+                    <i class="fab fa-facebook-f"></i>FACEBOOK
+                </a>
+                <a href="http://www.twitter.com/intent/tweet?url=@Request.Url.OriginalString&via=TWITTER_HANDLE_HERE&text=@Model.name" target="_blank" class="item-share"><i class="fab fa-twitter"></i> TWITTER</a>
+                <a href="http://plus.google.com/share?url=@Request.Url.OriginalString" target="_blank" class="item-share"><i class="fas fa-phone"></i>ZALO</a>
+                <a href="http://plus.google.com/share?url=@Request.Url.OriginalString" target="_blank" class="item-share"><i class="fab fa-google-plus-g"></i>GOOGLE+</a>
+            </div>
+            <!-- article share -->
+            <div class="chat-box">
+                <h2 class="title-highlight">@Project.Resources.MyText.Comment</h2>
+                @if (Session["uid"] == null)
+                {
+                    <div class="warning">
+                        @Project.Resources.MyText.Please <br />
+                        <a href="@Url.Action("Login","Home")">@Project.Resources.MyText.Login</a>
+                    </div>
+                }
+                else
+                {
+                    using (Html.BeginForm("View", "Article", FormMethod.Post, new { id = @Model.aid }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="your-comment">
+                            <div class="chat-avatar">
+                                <a href="@Url.Action("Index", "User", new { id = Session["uid"] })"><img src="~/images/profile/@Url.Content(Session["avatar"].ToString())" alt=""></a>
+                            </div>
+                            <div class="chat-text">
+                                <textarea name="message" id="message" rows="5" placeholder="Để lại bình luận của bạn" required></textarea>
+                                <input type="submit" value="Post" class="btn-chat">
+                            </div>
+                        </div>
+
+                    }
+                    <!-- your comment -->
+                }
+                <div class="data-chat" id="chat">
+                    @{Html.RenderAction("getComment", "Article", new { id = @Model.aid });}
+                </div>
+                @if (ViewData["demCmt"] != null && (int)ViewData["demCmt"] > 5)
+                {
+                    <div class="center"><a id="load-more" class="load-more">Load more</a></div>
+                }
+                <!-- data chat -->
+            </div>
+            <!-- chat box div -->
+        </div>
+    </div>
+    <!-- col duy 8 -->
+    <div class="col-duy-4">
+        <h2 class="title-highlight">
+            @Project.Resources.MyText.Related
+        </h2>
+        <div class="list">
+            @{Html.RenderAction("Related", "Article"); }
+        </div>
+        <!-- list -->
+    </div>
+    <!-- col duy 4 -->
+</div>
+<section class="similar">
+    <input type="hidden" value="@{if (Session["uid"] != null) {@Session["uid"].ToString(); }; }" id="data_user" />
+    <div class="fit">
+        @{Html.RenderAction("Similar", "Article", new { aid = @Model.aid, cid = @Model.cid }); }
+    </div>
+    <!-- fit fiv 1280 -->
+</section>
+<!-- end section -->
+<section class="spotlight">
+    <div class="fit">
+        @{Html.RenderAction("topView", "Article");}
+        @{Html.RenderAction("Spotlight", "Article"); }
+    </div>
+</section>
+<script>
+    var cmt = 5;
+                var skip = 5;
+                var flag = false;
+    $(document).ready(function () {
+        $('#load-more').click(function () {
+                        if (flag == true) {
+                            return false;
+                        }
+                        flag = true;
+            $('#load-more').html("Loading..");
+            $.ajax({
+                        url: '/Article/getComment',
+            type: 'get',
+            cache: false,
+            data: {
+                            id: @Model.aid,
+                skip : cmt
+            },
+                success: function (data) {
+                                cmt += skip;
+                                if (data == "") {
+                    //alert("Hết dữ liệu");
+                    $('#load-more').fadeOut();
+                                }
+                //alert(cmt);
+                    $('#chat').append(data);
+                    $('#load-more').html("Load more");
+                                flag = false;
+                            }
+                        });
+                    });
+                });
+</script>
+@*tha cam xuc*@
+<script>
+    var emojil = document.querySelectorAll('.feeling-item');
+    var data_user = document.querySelector("#data_user");
+    var is_load = false;
+    emojil.forEach(item => {
+        item.addEventListener('click', function () {
+            if (is_load == true) {
+                return false;
+            }
+            is_load = true;
+            $("#loadCamxuc").css({opacity: 0.6});
+            var value = item.getAttribute("data-id");
+            //alert(data_id + " - " + value);
+            var num = parseInt(item.children[1].innerHTML);
+            if (data_user.value == "") {
+                showPopup("LỖI","Vui lòng đăng nhập để sử dụng chức năng này !",true);
+                return false;
+            }
+            else {
+                $.ajax({
+                    url: '/Article/Like',
+                    type: 'get',
+                    cache: false,
+                    data: {
+                        aid: @Model.aid,
+                        uid: data_user.value,
+                        emojii: value
+                    },
+                    success: function (data) {
+                        if (data != null) {
+                            $("#heart").html(data.heart);
+                            $("#smile").html(data.smile);
+                            $("#angry").html(data.angry);
+                            $("#cry").html(data.cry);
+                            $("#scared").html(data.scared);
+                            //alert(data.heart);
+                        }
+                        is_load = false;
+                        $("#loadCamxuc").css({ opacity: 1 });
+                    }
+                });
+            }
+        });
+    });
+</script>
+@*report comment vi pham*@
+<script>
+    var report = document.querySelectorAll(".report");
+    var loader = document.querySelector(".loader-body");
+    var is_cmt_load = false;
+    report.forEach(rp => {
+        rp.addEventListener('click', function (e) {
+            e.preventDefault();
+            loader.classList.add('loader-active');
+            if (is_cmt_load == true) {
+                return false;
+            }
+            is_cmt_load = true;
+            var cmt_id = this.getAttribute("data-cmt");
+            //alert("hello " + cmt_id);
+            $.ajax({
+                url: '/Report/Index',
+                type: 'get',
+                cache: false,
+                data: {
+                    id: cmt_id
+                },
+                success: function (data) {
+                    loader.classList.remove("loader-active");
+                    showPopup("Thông báo", data.msg, true);
+                    is_cmt_load = false;
+                }
+            });
+        });
+    });
+</script>

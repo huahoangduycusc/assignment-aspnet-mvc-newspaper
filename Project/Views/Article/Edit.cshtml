@@ -1,0 +1,98 @@
+﻿@model Project.Models.article
+
+@{
+    ViewBag.Title = "Edit - Chỉnh sửa bài viết";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="panel-title">Chỉnh sửa chủ đề</div>
+
+@using (Html.BeginForm("Edit", "Article", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="text-danger">@ViewBag.Msg</div>
+    if (ViewBag.Success != null)
+    {
+        <div class="msg-success">@Html.Raw(ViewBag.Success)</div>
+    }
+<div class="form-horizontal">
+    <div class="form-group">
+        <p>Tiêu đề (Tiếng việt)</p>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.article_name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.article_name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p>Nội dung (Tiếng việt)</p>
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.description, 5, 5, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="phantrang"></div>
+    <div class="form-group">
+        <p>Tiêu đề (Tiếng anh)</p>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.article_name_en, new { htmlAttributes = new { @class = "form-control", required = "required" } })
+            @Html.ValidationMessageFor(model => model.article_name_en, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p>Nội dung (Tiếng anh)</p>
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.description_en, 5, 5, new { @class = "form-control", required = "required" })
+            @Html.ValidationMessageFor(model => model.description_en, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p>Chuyên mục</p>
+        @Html.DropDownListFor(m => m.category_id, new SelectList((System.Collections.IEnumerable)TempData["category"], "category_id", "category_name"), new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        <p>Thẻ</p>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.tags, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.tags, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p>Ảnh đại diện (Bỏ qua nếu không muốn cập nhật)</p>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.thumbnail, new { htmlAttributes = new { @class = "form-control", type = "file" } })
+            @Html.ValidationMessageFor(model => model.thumbnail, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p>Ưu tiên hiển thị</p>
+        <div class="col-md-10 center">
+            <span>@Html.RadioButtonFor(m => m.ghim, "0") Bình thường</span>
+            <span>@Html.RadioButtonFor(m => m.ghim, "1") Chú ý</span>
+            <span>@Html.RadioButtonFor(m => m.ghim, "2") Trending</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Update" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script src="~/Content/ckfinder/ckfinder.js"></script>
+<script>
+    CKEDITOR.replace('description');
+    CKEDITOR.replace('description_en');
+</script>

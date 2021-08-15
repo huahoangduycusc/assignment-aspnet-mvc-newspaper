@@ -1,0 +1,78 @@
+﻿@model Project.Models.thongke
+
+@{
+    ViewBag.Title = "Thống kê hệ thống";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="panel-title">Thống kê</div>
+
+<div class="statistic">
+    <div class="thongke-item">
+        <i class="fas fa-comment-alt"></i>
+        <div>
+            <h2>@Model.chuyenmuc</h2>
+            <p>Chuyên mục</p>
+        </div>
+    </div>
+    <!-- thong ke item -->
+    <div class="thongke-item">
+        <i class="fa fa-book" aria-hidden="true"></i>
+        <div>
+            <h2>@Model.baiviet</h2>
+            <p>Bài viết</p>
+        </div>
+    </div>
+    <!-- thong ke item -->
+    <div class="thongke-item">
+        <i class="fas fa-comment"></i>
+        <div>
+            <h2>@Model.binhluan</h2>
+            <p>Bình luận</p>
+        </div>
+    </div>
+    <!-- thong ke item -->
+    <div class="thongke-item">
+        <i class="fas fa-user"></i>
+        <div>
+            <h2>@Model.user</h2>
+            <p>Người dùng</p>
+        </div>
+    </div>
+    <!-- thong ke item -->
+    <div class="thongke-item">
+        <i class="fab fa-blogger-b"></i>
+        <div>
+            <h2>@Model.blog</h2>
+            <p>Blog</p>
+        </div>
+    </div>
+    <!-- thong ke item -->
+    <div class="thongke-item">
+        <i class="fas fa-star"></i>
+        <div>
+            <h2>@Model.bqt</h2>
+            <p>Ban QT</p>
+        </div>
+    </div>
+    <!-- thong ke item -->
+    <div class="thongke-item">
+        <i class="fas fa-thumbs-up"></i>
+        <div>
+            <h2>@Model.like</h2>
+            <p>Cảm xúc</p>
+        </div>
+    </div>
+    <!-- thong ke item -->
+    <div class="thongke-item">
+        <i class="fas fa-eye"></i>
+        <div>
+            <h2>@Model.view</h2>
+            <p>Lượt xem</p>
+        </div>
+    </div>
+    <!-- thong ke item -->
+</div>
+<div class="center" style="text-align:center;">
+    <img src="@Url.Action("Report")"/>
+</div>

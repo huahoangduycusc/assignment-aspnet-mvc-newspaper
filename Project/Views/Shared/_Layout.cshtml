@@ -1,0 +1,266 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Cty Giải trí tin tức truyền thông Thời Đại Mới</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="icon" href="~/icon/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="~/icon/apple-touch-icon.png" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <div class="logo">
+                <a href="@Url.Action("Index","Home")"><img src="~/images/logo.png" alt=""></a>
+            </div>
+            <div class="menu">
+                <i class="fas fa-bars"></i>
+            </div>
+            <nav>
+                <div class="logo-nav">
+                    <a href="@Url.Action("Index","Home")"><img src="~/images/logo.png" alt=""></a>
+                </div>
+                <ul class="nav-list">
+                    <li class="mini-search">
+                        @using (Html.BeginForm("Search", "Home", FormMethod.Get))
+                        {
+                            <div class="mini-search-container">
+                                <input type="text" name="s" id="s" placeholder="@Project.Resources.MyText.Search">
+                                <button type="submit"><i class="fas fa-search"></i></button>
+                            </div>
+                        }
+                    </li>
+                    <li class="nav-item" id="parent-menu">
+                        <a>@Project.Resources.MyText.Category <i class="fas fa-angle-right"></i></a>
+                        <ul class="sub-menu" id="smenu">
+                            @{Html.RenderAction("SideMenu", "Home");}
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index","Blog")">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Top","User")">TOP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Category","Home",new {id=6 })">K-POP</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="@Url.Action("Top","Home")">BXH</a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- navigition -->
+            <div class="search">
+                @using (Html.BeginForm("Search", "Home", FormMethod.Get))
+                {
+                    <div class="search-container">
+                        <input type="text" name="s" id="s" placeholder="@Project.Resources.MyText.Search">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+                }
+            </div>
+            <!-- search div -->
+            <div class="function">
+                <i class="fas fa-user"></i>
+                <div class="guess">
+                    <div class="guess-container">
+                        @if (Session.Count < 1)
+                        {
+                            <div class="guess-item">
+                                <a href="@Url.Action("Login","Home")"><i class="fas fa-sign-in-alt"></i> @Project.Resources.MyText.Login</a>
+                            </div>
+                            <div class="guess-item">
+                                <a href="@Url.Action("Register","Home")"><i class="fas fa-user-plus"></i> @Project.Resources.MyText.Register</a>
+                            </div>
+                        }
+                        else
+                        {
+                            if (User.IsInRole("admin") || User.IsInRole("btv") || User.IsInRole("nb") || User.IsInRole("ctv"))
+                            {
+                                <div class="guess-item">
+                                    <a href="@Url.Action("Index","Admin")" target="_blank"><i class="fas fa-cog"></i> @Project.Resources.MyText.Panel</a>
+                                </div>
+                            }
+                            <div class="guess-item">
+                                <a href="@Url.Action("Index","User",new { id = Session["uid"] })"><i class="fas fa-user-plus"></i> @Project.Resources.MyText.Profile</a>
+                            </div>
+                            <div class="guess-item">
+                                @{Html.RenderAction("demThongbao", "User");}
+                            </div>
+                            <div class="guess-item">
+                                @{Html.RenderAction("DemTinNhan", "Mail");}
+                            </div>
+                            <div class="guess-item">
+                                <a href="@Url.Action("Logout","Home")"><i class="fas fa-sign-out-alt"></i> @Project.Resources.MyText.Logout</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="overlay">
+            <i class="fas fa-times"></i>
+        </div>
+        <!-- loader -->
+        <div class="loader-body">
+            <div class="loader">
+                <div class="loader-inner">
+                </div>
+            </div>
+        </div>
+        @*pop up message*@
+        <div class="message-container">
+            <div class="message-popup">
+                <div class="popup-header" id="popup-header">thông báo</div>
+                <div class="popup-content" id="popup-content">huahoangduy...</div>
+                <div class="popup-action"><button id="close-popup">Ok</button></div>
+            </div>
+        </div>
+        @*phan hoi*@
+        <div class="phanhoi-container">
+            @using (Html.BeginForm("Index", "Feedback", FormMethod.Post, new { @class = "phanhoi-form", id = "send_fb" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="phanhoi-title">
+                    <img src="~/icon/fb.png" alt="">
+                </div>
+                <div class="phanhoi-bg">
+                    <div class="phanhoi-box">
+                        <input type="email" name="email" id="emailf" placeholder="Email" required>
+                    </div>
+                    <div class="phanhoi-box">
+                        <input type="text" name="title" id="titlef" placeholder="Title" required>
+                    </div>
+                    <div class="phanhoi-box">
+                        <textarea rows="7" placeholder="Message" name="message" id="msgf" required></textarea>
+                    </div>
+                    <div class="phanhoi-box">
+                        <button type="submit">@Project.Resources.MyText.Send</button>
+                        <a class="close-phanhoi">@Project.Resources.MyText.Close</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </header>
+    <!-- header -->
+    <div class="body-content">
+        @RenderBody()
+    </div>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-layout">
+                <h2 class="title">@Project.Resources.MyText.Follow</h2>
+                <div class="follows">
+                    <div class="follows-item">
+                        <a href="https://www.facebook.com/">Facebook</a>
+                        <a href="https://www.instagram.com/">Instagram</a>
+                        <a href="https://twitter.com/">Twitter</a>
+                        <a href="https://www.youtube.com/">Youtube</a>
+                    </div>
+                </div>
+            </div>
+            <!-- footer layout -->
+            <div class="footer-layout">
+                <h2 class="title">@Project.Resources.MyText.Sitemap</h2>
+                <div class="follows">
+                    <div class="follows-item">
+                        <a href="@Url.Action("Vechungtoi","Home")">@Project.Resources.MyText.Us</a>
+                        <a href="@Url.Action("ChinhSach","Home")">@Project.Resources.MyText.Policy</a>
+                        <a href="@Url.Action("Giayphep","Home")">@Project.Resources.MyText.License</a>
+                        <a href="@Url.Action("Trogiup","Home")">@Project.Resources.MyText.Help</a>
+                    </div>
+                </div>
+            </div>
+            <!-- footer layout -->
+            <div class="footer-layout">
+                <h2 class="title">@Project.Resources.MyText.Language</h2>
+                <div class="follows">
+                    <div class="follows-item">
+                        @Html.ActionLink("Vietnamese", "Change", "Language", new { language = "vi-VN" }, null)
+                        @Html.ActionLink("English", "Change", "Language", new { language = "en-US" }, null)
+                    </div>
+                </div>
+            </div>
+            <!-- footer layout -->
+        </div>
+        <br>
+        <div class="center">
+            @Project.Resources.MyText.Slogan @DateTime.Now.Year
+            <br>
+            @Project.Resources.MyText.Copyright
+            <div class="chuky">
+                <p>Design by</p><img src="~/images/@Url.Content("duy.png")" />
+            </div>
+        </div>
+    </footer>
+    <div class="scrollup">
+        <div class="scroll-circle">
+            <i class="fas fa-angle-up"></i>
+        </div>
+    </div>
+    <div class="img-fb" id="clickfb">
+        <img src="~/icon/feedback.png" />
+    </div>
+    @if (Session["uid"] != null)
+    {
+        {Html.RenderAction("displayBlock", "Block");}
+    }
+    <script>
+        $(document).ready(function () {
+            $('#send_fb').submit(function () {
+                //alert("Hello");
+                var emailf = $('#emailf').val();
+                var tieudef = $('#titlef').val();
+                var msgf = $('#msgf').val();
+                $.ajax({
+                    url: '/Feedback/Index',
+                    type: 'post',
+                    cache: false,
+                    data: {
+                        email: emailf,
+                        title: tieudef,
+                        message: msgf
+                    },
+                    success: function (result) {
+                        $('.phanhoi-container').removeClass('actives-phanhoi');
+                        $('#emailf').val('');
+                        $('#titlef').val('');
+                        $('#msgf').val('');
+                        showPopup("Thông báo", result.msg, true);
+                    },
+                    error: function () {
+                        alert("There are something wrong?");
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 100) {
+                    $('.scrollup').fadeIn();
+                } else {
+                    $('.scrollup').fadeOut();
+                }
+            });
+
+            $('.scrollup').click(function () {
+                $("html, body").animate({ scrollTop: 0 }, 800);
+                return false;
+            });
+
+        });
+    </script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

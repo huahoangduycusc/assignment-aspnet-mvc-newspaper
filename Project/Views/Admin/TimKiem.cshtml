@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "TimKiem";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="timkiem">
+    <input type="text" id="name" placeholder="Nhập tên người dùng" />
+    <button type="submit" id="btn"><i class="fas fa-search"></i></button>
+</div>
+
+<div class="list-1" id="result">
+
+</div>
+
+<script>
+    var btn = document.querySelector("#btn");
+    btn.addEventListener('click', function () {
+        var name = document.querySelector("#name");
+        $("#result").empty();
+        $("#result").html("<img src=\"https://www.ihrp.sg/wp-content/uploads/2019/06/giphy.gif\">");
+
+        $.ajax({
+            url: '/Admin/GetUser',
+            type: 'get',
+            cache: false,
+            data: {
+                name : name.value
+            },
+            success: function (data) {
+                $("#result").empty();
+                $("#result").append(data);
+                //alert(data);
+            }
+        });
+    });
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

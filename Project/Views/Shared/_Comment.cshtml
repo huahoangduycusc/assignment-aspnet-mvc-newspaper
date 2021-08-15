@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Project.Models.binhluan>
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <div class="chat-post">
+            <div class="chat-post-img">
+                <a href=""><img src="~/images/profile/@Url.Content(item.img)" alt="@item.name"></a>
+            </div>
+            <div class="chat-post-content">
+                <div class="user-chat">
+                    @{
+                        if (item.role == "admin")
+                        {
+                            <a href="@Url.Action("Index","User",new {id=@item.uid })"><b style="color:#FF5159;font-size:11pt">@item.name - Admin</b></a>
+                        }
+                        if (item.role == "btv")
+                        {
+                            <a href="@Url.Action("Index","User",new {id=@item.uid })"><b style="color:green;font-size:11pt">@item.name - @Project.Resources.MyText.Tbt</b></a>
+                        }
+                        if (item.role == "nb")
+                        {
+                            <a href="@Url.Action("Index","User",new {id=@item.uid })"><b style="color:DarkOrchid;font-size:11pt">@item.name - @Project.Resources.MyText.Nb</b></a>
+                        }
+                        if (item.role == "ctv")
+                        {
+                            <a href="@Url.Action("Index","User",new {id=@item.uid })"><b style="color:#EA9415;font-size:11pt">@item.name - @Project.Resources.MyText.Ctv</b></a>
+                        }
+                        if (item.role == "mem")
+                        {
+                            <a href="@Url.Action("Index","User",new {id=@item.uid })"><b style="color:#013481;font-size:11pt">@item.name</b></a>
+                        }
+
+                    }
+                    <p class="times">@item.day</p>
+                    <p class="control">
+                        @if (User.IsInRole("admin") || Session["uid"] != null && Session["uid"].ToString() == @item.uid.ToString())
+                        {
+                            <a href="@Url.Action("DelComment","Article",new {id=@item.id })" title="Xóa"><i class="fas fa-times"></i></a>
+                        }
+                        @if (Session["uid"] != null)
+                        {
+                            <a href="" class="report" data-cmt="@item.id" title="Report"><i class="fas fa-flag"></i></a>
+                        }
+                    </p>
+                </div>
+                <div class="user-comment">
+                    @item.msg
+                </div>
+            </div>
+            <!-- chat post content -->
+        </div>
+        <!-- chat post div item -->
+    }
+}
+@if (Model.Count() > 0)
+{
+    <script>
+    var report = document.querySelectorAll(".report");
+    var loader = document.querySelector(".loader-body"); // goi class loading
+    var is_cmt_load = false; // ngan chan viec multi click
+    report.forEach(rp => {
+        rp.addEventListener('click', function (e) {
+            e.preventDefault();
+            loader.classList.add('loader-active');
+            if (is_cmt_load == true) {
+                return false;
+            }
+            is_cmt_load = true;
+            var cmt_id = this.getAttribute("data-cmt");
+            //alert("hello " + cmt_id);
+            $.ajax({
+                url: '/Report/Index',
+                type: 'get',
+                cache: false,
+                data: {
+                    id: cmt_id
+                },
+                success: function (data) {
+                    loader.classList.remove("loader-active");
+                    showPopup("Thông báo",data.msg,true);
+                    is_cmt_load = false;
+                }
+            });
+        });
+    });
+    </script>
+}

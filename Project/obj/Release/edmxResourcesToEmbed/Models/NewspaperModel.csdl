@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="category_id" />
+    </Key>
+    <Property Name="category_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="category_name" Type="String" MaxLength="70" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="articles" Relationship="Database1Model.FK__article__categor__70DDC3D8" FromRole="Category" ToRole="article" />
+  </EntityType>
+  <EntityContainer Name="NewspaperEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Comments" EntityType="Database1Model.Comment" />
+    <EntitySet Name="Users" EntityType="Database1Model.User" />
+    <AssociationSet Name="FK__Comment__user_id__4F7CD00D" Association="Database1Model.FK__Comment__user_id__4F7CD00D">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Comment" EntitySet="Comments" />
+    </AssociationSet>
+    <EntitySet Name="likes" EntityType="Database1Model.like" />
+    <AssociationSet Name="FK__likes__user_id__74AE54BC" Association="Database1Model.FK__likes__user_id__74AE54BC">
+      <End Role="User" EntitySet="Users" />
+      <End Role="like" EntitySet="likes" />
+    </AssociationSet>
+    <EntitySet Name="articles" EntityType="Database1Model.article" />
+    <AssociationSet Name="FK__article__categor__70DDC3D8" Association="Database1Model.FK__article__categor__70DDC3D8">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="article" EntitySet="articles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__article__user_id__08B54D69" Association="Database1Model.FK__article__user_id__08B54D69">
+      <End Role="User" EntitySet="Users" />
+      <End Role="article" EntitySet="articles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Comment__article__151B244E" Association="Database1Model.FK__Comment__article__151B244E">
+      <End Role="article" EntitySet="articles" />
+      <End Role="Comment" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__likes__article_i__17036CC0" Association="Database1Model.FK__likes__article_i__17036CC0">
+      <End Role="article" EntitySet="articles" />
+      <End Role="like" EntitySet="likes" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="cmt_id" />
+    </Key>
+    <Property Name="cmt_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="created_at" Type="DateTime" Precision="3" />
+    <Property Name="article_id" Type="Int32" />
+    <Property Name="user_id" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="Database1Model.FK__Comment__user_id__4F7CD00D" FromRole="Comment" ToRole="User" />
+    <NavigationProperty Name="article" Relationship="Database1Model.FK__Comment__article__151B244E" FromRole="Comment" ToRole="article" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="fullname" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+    <Property Name="gender" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+    <Property Name="birthday" Type="DateTime" Precision="0" />
+    <Property Name="address" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+    <Property Name="post" Type="Int32" />
+    <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="timeJoin" Type="DateTime" Precision="3" />
+    <Property Name="avatar" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Comments" Relationship="Database1Model.FK__Comment__user_id__4F7CD00D" FromRole="User" ToRole="Comment" />
+    <NavigationProperty Name="likes" Relationship="Database1Model.FK__likes__user_id__74AE54BC" FromRole="User" ToRole="like" />
+    <Property Name="phone" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="favourite" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="articles" Relationship="Database1Model.FK__article__user_id__08B54D69" FromRole="User" ToRole="article" />
+  </EntityType>
+  <Association Name="FK__Comment__user_id__4F7CD00D">
+    <End Type="Database1Model.User" Role="User" Multiplicity="0..1" />
+    <End Type="Database1Model.Comment" Role="Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="like">
+    <Key>
+      <PropertyRef Name="like_id" />
+    </Key>
+    <Property Name="like_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="article_id" Type="Int32" />
+    <Property Name="camxuc" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="User" Relationship="Database1Model.FK__likes__user_id__74AE54BC" FromRole="like" ToRole="User" />
+    <NavigationProperty Name="article" Relationship="Database1Model.FK__likes__article_i__17036CC0" FromRole="like" ToRole="article" />
+  </EntityType>
+  <Association Name="FK__likes__user_id__74AE54BC">
+    <End Type="Database1Model.User" Role="User" Multiplicity="0..1" />
+    <End Type="Database1Model.like" Role="like" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="like">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="article">
+    <Key>
+      <PropertyRef Name="article_id" />
+    </Key>
+    <Property Name="article_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="category_id" Type="Int32" Nullable="false" />
+    <Property Name="article_name" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="description" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="thumbnail" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="created_at" Type="DateTime" Precision="3" />
+    <Property Name="tags" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="views" Type="Int32" />
+    <Property Name="status" Type="Int32" />
+    <Property Name="ghim" Type="Int32" />
+    <Property Name="user_id" Type="Int32" />
+    <NavigationProperty Name="Category" Relationship="Database1Model.FK__article__categor__70DDC3D8" FromRole="article" ToRole="Category" />
+    <NavigationProperty Name="User" Relationship="Database1Model.FK__article__user_id__08B54D69" FromRole="article" ToRole="User" />
+    <NavigationProperty Name="Comments" Relationship="Database1Model.FK__Comment__article__151B244E" FromRole="article" ToRole="Comment" />
+    <NavigationProperty Name="likes" Relationship="Database1Model.FK__likes__article_i__17036CC0" FromRole="article" ToRole="like" />
+  </EntityType>
+  <Association Name="FK__article__categor__70DDC3D8">
+    <End Type="Database1Model.Category" Role="Category" Multiplicity="1" />
+    <End Type="Database1Model.article" Role="article" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="category_id" />
+      </Principal>
+      <Dependent Role="article">
+        <PropertyRef Name="category_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__article__user_id__08B54D69">
+    <End Type="Database1Model.User" Role="User" Multiplicity="0..1" />
+    <End Type="Database1Model.article" Role="article" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="article">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Comment__article__151B244E">
+    <End Type="Database1Model.article" Role="article" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="Database1Model.Comment" Role="Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="article">
+        <PropertyRef Name="article_id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="article_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__likes__article_i__17036CC0">
+    <End Type="Database1Model.article" Role="article" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="Database1Model.like" Role="like" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="article">
+        <PropertyRef Name="article_id" />
+      </Principal>
+      <Dependent Role="like">
+        <PropertyRef Name="article_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

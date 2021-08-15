@@ -1,0 +1,44 @@
+﻿@model IPagedList<Project.Models.bannick>
+
+@{
+    ViewBag.Title = "Danh sách người dùng bị khóa";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="panel-title">Danh sách người dùng bị khóa</div>
+<table class="table">
+    <tr>
+        <th>Người bị khóa</th>
+        <th>Người khóa</th>
+        <th>Lý do</th>
+        <th>Thời hạn</th>
+        <th>Panel</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("Index","User",new {id=item.uid })">@item.uname</a>
+            </td>
+            <td>
+                <a href="@Url.Action("Index","User",new {id=item.fid })">@item.fname</a>
+            </td>
+            <td>
+                @item.lydo
+            </td>
+            <td>
+                @item.today
+            </td>
+            <td>
+                <a href="@Url.Action("Delete","Block",new {id=item.bid })" class="btn-danger" onclick="return confirm('Bạn có chắc muốn xóa feedback này?');">Xóa</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@Html.PagedListPager(Model, page => Url.Action("List", "Block", new { page}))

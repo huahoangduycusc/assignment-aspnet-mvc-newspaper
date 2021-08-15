@@ -1,0 +1,59 @@
+﻿@model IPagedList<Project.Models.baocaoCmt>
+
+@{
+    ViewBag.Title = "Warning";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="panel-title">Danh sách bình luận bị báo cáo</div>
+
+<table class="table">
+    <tr>
+        <th>
+            Người gửi
+        </th>
+        <th>
+           Tại chủ đề
+        </th>
+        <th>
+            Bình luận
+        </th>
+        <th>
+            Lượt Report
+        </th>
+        <th>
+            Lúc
+        </th>
+        <th>Panel</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+               <a href="@Url.Action("Index","User",new {id=item.user_id })">@item.nickname</a>
+            </td>
+            <td>
+                <a href="@Url.Action("View","Article",new {id=item.aid })">@item.title</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.msg)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.report)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_at)
+            </td>
+            <td>
+                <a href="@Url.Action("Delete","Report",new {id=item.cid,back=Request.Url.PathAndQuery })" class="btn-danger" onclick="return confirm('Bạn có chắc muốn xóa bình luận này');">Del</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@Html.PagedListPager(Model, page => Url.Action("Warning", "Report", new { page }))

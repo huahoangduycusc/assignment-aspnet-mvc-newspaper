@@ -1,0 +1,424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="newspaperModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="article">
+    <Key>
+      <PropertyRef Name="article_id" />
+    </Key>
+    <Property Name="article_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="category_id" Type="Int32" Nullable="false" />
+    <Property Name="article_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="article_name_en" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="description_en" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="thumbnail" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="created_at" Type="DateTime" Precision="3" />
+    <Property Name="tags" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="views" Type="Int32" />
+    <Property Name="status" Type="Int32" />
+    <Property Name="ghim" Type="Int32" />
+    <Property Name="user_id" Type="Int32" />
+    <NavigationProperty Name="Category" Relationship="Self.FK__article__categor__5812160E" FromRole="article" ToRole="Category" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK__Comment__article__5CD6CB2B" FromRole="article" ToRole="Comment" />
+    <NavigationProperty Name="likes" Relationship="Self.FK__likes__article_i__5FB337D6" FromRole="article" ToRole="likes" />
+    <NavigationProperty Name="statistics" Relationship="Self.FK__statistic__artic__619B8048" FromRole="article" ToRole="statistic" />
+    <NavigationProperty Name="User" Relationship="newspaperModel.FK__article__user_id__6A30C649" FromRole="article" ToRole="User" />
+  </EntityType>
+  <EntityType Name="blog">
+    <Key>
+      <PropertyRef Name="blog_id" />
+    </Key>
+    <Property Name="blog_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="blog_title" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="blog_msg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="blog_title_en" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="blog_msg_en" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="created_at" Type="DateTime" Precision="3" />
+    <Property Name="thumbnail" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="user_id" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="newspaperModel.FK__blog__user_id__6B24EA82" FromRole="blog" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="category_id" />
+    </Key>
+    <Property Name="category_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="category_name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="category_name_en" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="articles" Relationship="Self.FK__article__categor__5812160E" FromRole="Category" ToRole="article" />
+  </EntityType>
+  <EntityType Name="cms_contact">
+    <Key>
+      <PropertyRef Name="contact_id" />
+    </Key>
+    <Property Name="contact_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="from_user" Type="Int32" />
+    <Property Name="to_user" Type="Int32" />
+    <Property Name="message" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="created_at" Type="DateTime" Precision="3" />
+    <Property Name="mail_id" Type="Int32" />
+    <Property Name="seen" Type="Int32" />
+    <NavigationProperty Name="cms_mail" Relationship="Self.FK__cms_conta__mail___5AEE82B9" FromRole="cms_contact" ToRole="cms_mail" />
+  </EntityType>
+  <EntityType Name="cms_mail">
+    <Key>
+      <PropertyRef Name="mail_id" />
+    </Key>
+    <Property Name="mail_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="from_user" Type="Int32" />
+    <Property Name="to_user" Type="Int32" />
+    <Property Name="created_at" Type="DateTime" Precision="3" />
+    <Property Name="spam" Type="Int32" />
+    <NavigationProperty Name="cms_contact" Relationship="Self.FK__cms_conta__mail___5AEE82B9" FromRole="cms_mail" ToRole="cms_contact" />
+    <NavigationProperty Name="User" Relationship="newspaperModel.FK__cms_mail__from_u__6C190EBB" FromRole="cms_mail" ToRole="User" />
+  </EntityType>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="cmt_id" />
+    </Key>
+    <Property Name="cmt_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="message" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="created_at" Type="DateTime" Precision="3" />
+    <Property Name="article_id" Type="Int32" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="report" Type="Int32" />
+    <NavigationProperty Name="article" Relationship="Self.FK__Comment__article__5CD6CB2B" FromRole="Comment" ToRole="article" />
+    <NavigationProperty Name="User" Relationship="newspaperModel.FK__Comment__user_id__6D0D32F4" FromRole="Comment" ToRole="User" />
+  </EntityType>
+  <EntityType Name="follow">
+    <Key>
+      <PropertyRef Name="follow_id" />
+    </Key>
+    <Property Name="follow_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="from_user" Type="Int32" />
+    <Property Name="to_user" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="newspaperModel.FK__follow__from_use__6E01572D" FromRole="follow" ToRole="User" />
+  </EntityType>
+  <EntityType Name="like">
+    <Key>
+      <PropertyRef Name="like_id" />
+    </Key>
+    <Property Name="like_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="article_id" Type="Int32" />
+    <Property Name="camxuc" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="article" Relationship="Self.FK__likes__article_i__5FB337D6" FromRole="likes" ToRole="article" />
+    <NavigationProperty Name="User" Relationship="newspaperModel.FK__likes__user_id__6EF57B66" FromRole="like" ToRole="User" />
+  </EntityType>
+  <EntityType Name="statistic">
+    <Key>
+      <PropertyRef Name="sta_id" />
+    </Key>
+    <Property Name="sta_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="article_id" Type="Int32" />
+    <Property Name="view" Type="Int32" />
+    <Property Name="created_at" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="article" Relationship="Self.FK__statistic__artic__619B8048" FromRole="statistic" ToRole="article" />
+  </EntityType>
+  <EntityType Name="thongbao">
+    <Key>
+      <PropertyRef Name="tb_id" />
+    </Key>
+    <Property Name="tb_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="msg" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="user_id" Type="Int32" />
+    <Property Name="seen" Type="Int32" />
+    <Property Name="created_at" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="User" Relationship="newspaperModel.FK__thongbao__user_i__6FE99F9F" FromRole="thongbao" ToRole="User" />
+  </EntityType>
+  <Association Name="FK__article__categor__5812160E">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="article" Type="Self.article" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="category_id" />
+      </Principal>
+      <Dependent Role="article">
+        <PropertyRef Name="category_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Comment__article__5CD6CB2B">
+    <End Role="article" Type="Self.article" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="article">
+        <PropertyRef Name="article_id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="article_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__likes__article_i__5FB337D6">
+    <End Role="article" Type="Self.article" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="likes" Type="Self.like" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="article">
+        <PropertyRef Name="article_id" />
+      </Principal>
+      <Dependent Role="likes">
+        <PropertyRef Name="article_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__statistic__artic__619B8048">
+    <End Role="article" Type="Self.article" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="statistic" Type="Self.statistic" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="article">
+        <PropertyRef Name="article_id" />
+      </Principal>
+      <Dependent Role="statistic">
+        <PropertyRef Name="article_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__cms_conta__mail___5AEE82B9">
+    <End Role="cms_mail" Type="Self.cms_mail" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="cms_contact" Type="Self.cms_contact" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="cms_mail">
+        <PropertyRef Name="mail_id" />
+      </Principal>
+      <Dependent Role="cms_contact">
+        <PropertyRef Name="mail_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="NewspaperEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="articles" EntityType="Self.article" />
+    <EntitySet Name="blogs" EntityType="Self.blog" />
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="cms_contact" EntityType="Self.cms_contact" />
+    <EntitySet Name="cms_mail" EntityType="Self.cms_mail" />
+    <EntitySet Name="Comments" EntityType="Self.Comment" />
+    <EntitySet Name="follows" EntityType="Self.follow" />
+    <EntitySet Name="likes" EntityType="Self.like" />
+    <EntitySet Name="statistics" EntityType="Self.statistic" />
+    <EntitySet Name="thongbaos" EntityType="Self.thongbao" />
+    <AssociationSet Name="FK__article__categor__5812160E" Association="Self.FK__article__categor__5812160E">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="article" EntitySet="articles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Comment__article__5CD6CB2B" Association="Self.FK__Comment__article__5CD6CB2B">
+      <End Role="article" EntitySet="articles" />
+      <End Role="Comment" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__likes__article_i__5FB337D6" Association="Self.FK__likes__article_i__5FB337D6">
+      <End Role="article" EntitySet="articles" />
+      <End Role="likes" EntitySet="likes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__statistic__artic__619B8048" Association="Self.FK__statistic__artic__619B8048">
+      <End Role="article" EntitySet="articles" />
+      <End Role="statistic" EntitySet="statistics" />
+    </AssociationSet>
+    <AssociationSet Name="FK__cms_conta__mail___5AEE82B9" Association="Self.FK__cms_conta__mail___5AEE82B9">
+      <End Role="cms_mail" EntitySet="cms_mail" />
+      <End Role="cms_contact" EntitySet="cms_contact" />
+    </AssociationSet>
+    <EntitySet Name="Users" EntityType="newspaperModel.User" />
+    <AssociationSet Name="FK__article__user_id__6A30C649" Association="newspaperModel.FK__article__user_id__6A30C649">
+      <End Role="User" EntitySet="Users" />
+      <End Role="article" EntitySet="articles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__blog__user_id__6B24EA82" Association="newspaperModel.FK__blog__user_id__6B24EA82">
+      <End Role="User" EntitySet="Users" />
+      <End Role="blog" EntitySet="blogs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__cms_mail__from_u__6C190EBB" Association="newspaperModel.FK__cms_mail__from_u__6C190EBB">
+      <End Role="User" EntitySet="Users" />
+      <End Role="cms_mail" EntitySet="cms_mail" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Comment__user_id__6D0D32F4" Association="newspaperModel.FK__Comment__user_id__6D0D32F4">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Comment" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__follow__from_use__6E01572D" Association="newspaperModel.FK__follow__from_use__6E01572D">
+      <End Role="User" EntitySet="Users" />
+      <End Role="follow" EntitySet="follows" />
+    </AssociationSet>
+    <AssociationSet Name="FK__likes__user_id__6EF57B66" Association="newspaperModel.FK__likes__user_id__6EF57B66">
+      <End Role="User" EntitySet="Users" />
+      <End Role="like" EntitySet="likes" />
+    </AssociationSet>
+    <AssociationSet Name="FK__thongbao__user_i__6FE99F9F" Association="newspaperModel.FK__thongbao__user_i__6FE99F9F">
+      <End Role="User" EntitySet="Users" />
+      <End Role="thongbao" EntitySet="thongbaos" />
+    </AssociationSet>
+    <EntitySet Name="feedbacks" EntityType="newspaperModel.feedback" />
+    <EntitySet Name="blocks" EntityType="newspaperModel.block" />
+    <AssociationSet Name="FK__block__block_use__01142BA1" Association="newspaperModel.FK__block__block_use__01142BA1">
+      <End Role="User" EntitySet="Users" />
+      <End Role="block" EntitySet="blocks" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+    <Property Name="fullname" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+    <Property Name="nickname" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="gender" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+    <Property Name="birthday" Type="DateTime" Precision="0" />
+    <Property Name="address" Type="String" MaxLength="70" FixedLength="false" Unicode="true" />
+    <Property Name="phone" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="favourite" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="post" Type="Int32" />
+    <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="timeJoin" Type="DateTime" Precision="3" />
+    <Property Name="avatar" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="articles" Relationship="newspaperModel.FK__article__user_id__6A30C649" FromRole="User" ToRole="article" />
+    <NavigationProperty Name="blogs" Relationship="newspaperModel.FK__blog__user_id__6B24EA82" FromRole="User" ToRole="blog" />
+    <NavigationProperty Name="cms_mail" Relationship="newspaperModel.FK__cms_mail__from_u__6C190EBB" FromRole="User" ToRole="cms_mail" />
+    <NavigationProperty Name="Comments" Relationship="newspaperModel.FK__Comment__user_id__6D0D32F4" FromRole="User" ToRole="Comment" />
+    <NavigationProperty Name="follows" Relationship="newspaperModel.FK__follow__from_use__6E01572D" FromRole="User" ToRole="follow" />
+    <NavigationProperty Name="likes" Relationship="newspaperModel.FK__likes__user_id__6EF57B66" FromRole="User" ToRole="like" />
+    <NavigationProperty Name="thongbaos" Relationship="newspaperModel.FK__thongbao__user_i__6FE99F9F" FromRole="User" ToRole="thongbao" />
+    <NavigationProperty Name="blocks" Relationship="newspaperModel.FK__block__block_use__01142BA1" FromRole="User" ToRole="block" />
+  </EntityType>
+  <Association Name="FK__article__user_id__6A30C649">
+    <End Type="newspaperModel.User" Role="User" Multiplicity="0..1" />
+    <End Type="newspaperModel.article" Role="article" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="article">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__blog__user_id__6B24EA82">
+    <End Type="newspaperModel.User" Role="User" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="newspaperModel.blog" Role="blog" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="blog">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__cms_mail__from_u__6C190EBB">
+    <End Type="newspaperModel.User" Role="User" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="newspaperModel.cms_mail" Role="cms_mail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="cms_mail">
+        <PropertyRef Name="from_user" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Comment__user_id__6D0D32F4">
+    <End Type="newspaperModel.User" Role="User" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="newspaperModel.Comment" Role="Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__follow__from_use__6E01572D">
+    <End Type="newspaperModel.User" Role="User" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="newspaperModel.follow" Role="follow" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="follow">
+        <PropertyRef Name="from_user" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__likes__user_id__6EF57B66">
+    <End Type="newspaperModel.User" Role="User" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="newspaperModel.like" Role="like" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="like">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__thongbao__user_i__6FE99F9F">
+    <End Type="newspaperModel.User" Role="User" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="newspaperModel.thongbao" Role="thongbao" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="thongbao">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="feedback">
+    <Key>
+      <PropertyRef Name="fb_id" />
+    </Key>
+    <Property Name="fb_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="title" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="message" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="seen" Type="Int32" />
+    <Property Name="created_at" Type="DateTime" Precision="3" />
+  </EntityType>
+  <EntityType Name="block">
+    <Key>
+      <PropertyRef Name="block_id" />
+    </Key>
+    <Property Name="block_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="block_user" Type="Int32" />
+    <Property Name="block_time" Type="DateTime" Precision="0" />
+    <Property Name="block_from" Type="Int32" />
+    <Property Name="block_lydo" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="created_at" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="User" Relationship="newspaperModel.FK__block__block_use__01142BA1" FromRole="block" ToRole="User" />
+  </EntityType>
+  <Association Name="FK__block__block_use__01142BA1">
+    <End Type="newspaperModel.User" Role="User" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="newspaperModel.block" Role="block" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="block">
+        <PropertyRef Name="block_user" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

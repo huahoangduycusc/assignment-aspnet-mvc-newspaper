@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "Search";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<div class="fit">
+    <div class="search-box">
+        <h2 class="title-highlight">SEARCH</h2>
+        <form action="" method="get" class="form">
+            <input type="text" name="s" id="s" placeholder="What are you looking for ?">
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>
+</div>
+<section class="bg-category fit">
+    <div class="list-article" id="article">
+        <input type="hidden" value="@Request.QueryString["s"]" id="query" />
+        <!-- list article item -->
+        @{Html.RenderAction("SearchDisplay", "Home", new { s = Request.QueryString["s"] });}
+    </div>
+    <!-- list article -->
+    @if (TempData["countS"] != null && (int)TempData["countS"] > 9)
+    {
+        <div class="load-bg">
+            <a href="" id="getMore" class="load_more_bg">Load more</a>
+        </div>
+    }
+    @if((int)TempData["countS"] == 0)
+    {
+        <div class="empty">Không tìm thấy kết quả theo yêu cầu của bạn</div>
+    }
+</section>
+<script>
+    var cmt = 9;
+    var skip = 9;
+    var flag = false;
+    $(document).ready(function () {
+        var query = document.querySelector("#query");
+        $('#getMore').click(function (e) {
+            e.preventDefault();
+            if (flag == true) {
+                return false;
+            }
+            flag = true;
+            $('#getMore').html("Loading..");
+            $.ajax({
+            url: '/Home/SearchDisplay',
+            type: 'get',
+            cache: false,
+            data: {
+                s: query.value,
+                skip : cmt
+            },
+                success: function (data) {
+                    cmt += skip;
+                if (data == "") {
+                    //alert("Hết dữ liệu");
+                    $('#getMore').fadeOut();
+                }
+                //alert(cmt);
+                    $('#article').append(data);
+                    $('#getMore').html("Load more");
+                    flag = false;
+            }
+        });
+        });
+    });
+</script>

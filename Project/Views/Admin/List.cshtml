@@ -1,0 +1,52 @@
+﻿@model IPagedList<Project.Models.Category>
+
+@{
+    ViewBag.Title = "List Category";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="panel-title">Danh sách chuyên mục</div>
+
+<p>
+    @Html.ActionLink("Create New", "Category")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Category ID
+        </th>
+        <th>
+            Category Name (VI)
+        </th>
+        <th>
+            Category Name (EN)
+        </th>
+        <th>
+            Panel
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.category_id)
+            </td>
+            <td>
+                <a href="@Url.Action("Category","Home",new {id=item.category_id })">@item.category_name</a>
+            </td>
+            <td>
+                <a href="@Url.Action("Category","Home",new {id=item.category_id })">@item.category_name_en</a>
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "EditCategory", new { id = item.category_id },new {@class="btn-warning" })
+                @Html.ActionLink("Delete", "DelCategory", new { id = item.category_id }, new {@class="btn-danger" })
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.PagedListPager(Model, page => Url.Action("List", "Admin", new { page }))

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="cebb6fa3cf5e4782a3be7f0361634da0" Name="Diagram1">
+        <EntityTypeShape EntityType="newspaperModel.article" Width="1.5" PointX="6" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="newspaperModel.blog" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="newspaperModel.Category" Width="1.5" PointX="3.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="newspaperModel.cms_contact" Width="1.5" PointX="5.25" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="newspaperModel.cms_mail" Width="1.5" PointX="3" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="newspaperModel.Comment" Width="1.5" PointX="8.25" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="newspaperModel.follow" Width="1.5" PointX="3" PointY="18.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="newspaperModel.like" Width="1.5" PointX="11.25" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="newspaperModel.statistic" Width="1.5" PointX="8.25" PointY="17.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="newspaperModel.thongbao" Width="1.5" PointX="3" PointY="20.875" IsExpanded="true" />
+        <AssociationConnector Association="newspaperModel.FK__article__categor__5812160E" ManuallyRouted="false" />
+        <AssociationConnector Association="newspaperModel.FK__Comment__article__5CD6CB2B" ManuallyRouted="false" />
+        <AssociationConnector Association="newspaperModel.FK__likes__article_i__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="newspaperModel.FK__statistic__artic__619B8048" ManuallyRouted="false" />
+        <AssociationConnector Association="newspaperModel.FK__cms_conta__mail___5AEE82B9" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="newspaperModel.User" Width="1.5" PointX="0.75" PointY="13.875" />
+        <AssociationConnector Association="newspaperModel.FK__article__user_id__6A30C649" />
+        <AssociationConnector Association="newspaperModel.FK__blog__user_id__6B24EA82" />
+        <AssociationConnector Association="newspaperModel.FK__cms_mail__from_u__6C190EBB" />
+        <AssociationConnector Association="newspaperModel.FK__Comment__user_id__6D0D32F4" />
+        <AssociationConnector Association="newspaperModel.FK__follow__from_use__6E01572D" />
+        <AssociationConnector Association="newspaperModel.FK__likes__user_id__6EF57B66" />
+        <AssociationConnector Association="newspaperModel.FK__thongbao__user_i__6FE99F9F" />
+        <EntityTypeShape EntityType="newspaperModel.feedback" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="newspaperModel.block" Width="1.5" PointX="3" PointY="24.375" />
+        <AssociationConnector Association="newspaperModel.FK__block__block_use__01142BA1" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

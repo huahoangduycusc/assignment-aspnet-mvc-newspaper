@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Project.Models.baiviet>
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <div class="list-article-item">
+            <div class="list-article-img">
+                <a href="@Url.Action("View","Article",new {id=@item.aid })"><img src="~/images/thumbnail/@Url.Content(item.img)" alt=""></a>
+            </div>
+            <div class="list-article-infor">
+                <div class="list-article-col-8">
+                    <a href="@Url.Action("View","Article",new {id=@item.aid })"><p>@item.name</p></a>
+                </div>
+                <div class="list-article-col-4">
+                    <span>@item.day</span>
+                </div>
+            </div>
+        </div>
+        <!-- list article item -->
+    }
+}

@@ -1,0 +1,89 @@
+﻿@model PagedList<Project.Models.TopicStatistic>
+
+@{
+    ViewBag.Title = "ReportView";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="panel-title">Danh sách bài viết xem nhiều nhất</div>
+<div class="filter">
+    @using (Html.BeginForm("PrintReportView", "Admin", FormMethod.Get))
+    {
+        <span>Từ</span> <input type="date" name="tu" id="tu" required />
+        <span>Đến</span> <input type="date" name="den" id="den" required />
+        <a class="btn" id="btn"><i class="fas fa-search"></i></a>
+        <button type="submit" class="btn print"><i class="fas fa-print"></i></button>
+    }
+</div>
+<table class="table">
+    <tr>
+        <th>
+            Tên
+        </th>
+        <th>
+            Tác giả
+        </th>
+        <th>
+            Lượt xem
+        </th>
+        <th>
+            Ngày tạo
+        </th>
+    </tr>
+
+    <tbody id="result">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("View", "Article", new { id = item.aid })">@item.title</a>
+                </td>
+                <td>
+                    <a href="@Url.Action("Index","User",new {id=item.uid })">@item.username</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.view)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.created_at)
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+@Html.PagedListPager(Model, page => Url.Action("ReportView", "Admin", new { page }))
+<script>
+    var btn = document.querySelector("#btn");
+    btn.addEventListener('click', function () {
+        var from = document.querySelector("#tu");
+        var to = document.querySelector("#den");
+        if (to.value == "" || from.value == "") {
+            alert("Vui lòng chọn ngày tháng bắt đầu và kết thúc");
+            return false;
+        }
+        $("#result").empty();
+        $("#result").html("<tr></tr><tr><td colspan=\"4\"><img src=\"https://www.ihrp.sg/wp-content/uploads/2019/06/giphy.gif\" style='width:150px'></td></tr>");
+        //alert("Từ " + from.value +"đến " + to.value);
+        $.ajax({
+            url: '/Admin/ReportViewMonth',
+            type: 'get',
+            cache: false,
+            data: {
+                tu: from.value,
+                den: to.value
+            },
+            success: function (data) {
+                //alert(data);
+                $("#result").empty();
+                $("#result").append(data);
+            }
+        });
+    });
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

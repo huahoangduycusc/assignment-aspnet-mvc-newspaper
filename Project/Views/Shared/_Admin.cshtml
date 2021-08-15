@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
+    <link rel="stylesheet" href="~/Content/admin.css">
+    <link rel="icon" href="~/icon/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="~/icon/apple-touch-icon.png" />
+</head>
+<body>
+    <div class="body-content">
+        <div class="content-left">
+            <h2>Admin Panel</h2>
+            <div class="welcome">
+                <img src="~/images/profile/@Url.Content(Session["avatar"].ToString())" />
+                Xin chào @Session["username"] !
+            </div>
+            <div class="nav">
+                <ul class="nav-content">
+                    <li class="nav-item">
+                        <a href="@Url.Action("Index","Home")"><i class="fas fa-home"></i>Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a><i class="fas fa-poll"></i>Thống kê hệ thống</a>
+                        <ul class="sub-menu">
+                            <li><a href="@Url.Action("Index","Admin")"><i class="fa fa-caret-right" aria-hidden="true"></i>Thống kê chung</a></li>
+                            <li><a href="@Url.Action("ReportView","Admin")"><i class="fa fa-caret-right" aria-hidden="true"></i>Báo cáo lượt xem</a></li>
+                            <li><a href="@Url.Action("ReportHot","Admin")"><i class="fa fa-caret-right" aria-hidden="true"></i>Báo cáo chủ đề được quan tâm</a></li>
+                        </ul>
+                    </li>
+                    @{
+                        if (User.IsInRole("admin"))
+                        {
+                            <li class="nav-item">
+                                <a> <i class="fas fa-align-justify"></i>Quản lý danh mục</a>
+                                <ul class="sub-menu">
+                                    <li><a href="@Url.Action("Category","Admin")"><i class="fa fa-caret-right" aria-hidden="true"></i>Thêm danh mục mới</a></li>
+                                    <li><a href="@Url.Action("List","Admin")"><i class="fa fa-caret-right" aria-hidden="true"></i>Danh sách danh mục</a></li>
+                                </ul>
+                            </li>
+                        }
+                    }
+                    <li class="nav-item">
+                        <a> <i class="fas fa-newspaper"></i>Quản lý bài viết</a>
+                        <ul class="sub-menu">
+                            <li><a href="@Url.Action("Create","Article")"><i class="fa fa-caret-right" aria-hidden="true"></i>Đăng chủ đề mới</a></li>
+                            @{
+                                if (User.IsInRole("admin") || User.IsInRole("btv"))
+                                {
+                                    <li><a href="@Url.Action("List","Article")"><i class="fa fa-caret-right" aria-hidden="true"></i>Danh sách chủ đề</a></li>
+                                    <li><a href="@Url.Action("Waiting","Article")"><i class="fa fa-caret-right" aria-hidden="true"></i>Bài viết chờ duyệt</a></li>
+                                }
+                            }
+                            <li><a href="@Url.Action("YourArticle","Article")"><i class="fa fa-caret-right" aria-hidden="true"></i>Bài viết của bạn</a></li>
+                        </ul>
+                    </li>
+                    @{
+                        if (User.IsInRole("admin"))
+                        {
+                            <li class="nav-item">
+                                <a> <i class="fas fa-users"></i>Quản lý người dùng </a>
+                                <ul class="sub-menu">
+                                    <li><a href="@Url.Action("List","User")"><i class="fa fa-caret-right" aria-hidden="true"></i>Danh sách người dùng</a></li>
+                                    <li><a href="@Url.Action("TimKiem","Admin")"><i class="fa fa-caret-right" aria-hidden="true"></i>Tìm kiếm người dùng</a></li>
+                                    <li><a href="@Url.Action("List","Block")"><i class="fa fa-caret-right" aria-hidden="true"></i>Người dùng bị khóa</a></li>
+                                </ul>
+                            </li>
+                        }
+                    }
+                    <li class="nav-item">
+                        <a><i class="fas fa-comments"></i>Quản lý bình luận</a>
+                        <ul class="sub-menu">
+                            <li><a href="@Url.Action("Warning","Report")"><i class="fa fa-caret-right" aria-hidden="true"></i>Bình luận bị báo cáo</a></li>
+                            <li><a href="@Url.Action("List","Report")"><i class="fa fa-caret-right" aria-hidden="true"></i>Tất cả bình luận</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a><i class="fab fa-blogger-b"></i>Quản lý Blog</a>
+                        <ul class="sub-menu">
+                            <li><a href="@Url.Action("List","Blog")"><i class="fa fa-caret-right" aria-hidden="true"></i>Danh sách chủ đề</a></li>
+                            <li><a href="@Url.Action("Create","Blog")"><i class="fa fa-caret-right" aria-hidden="true"></i>Đăng chủ đề mới</a></li>
+                        </ul>
+                    </li>
+                    @{
+                        if (User.IsInRole("admin") || User.IsInRole("btv"))
+                        {
+                          <li><a href="@Url.Action("List","Feedback")"><i class="fas fa-recycle"></i>Feedback</a></li>
+                        }
+                    }
+                    <li><a href="@Url.Action("ListBQT","Admin")"><i class="fas fa-user-shield"></i>Danh sách BQT</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- content left -->
+        <div class="content-right">
+            <div class="slogan">
+                QUẢN LÝ HỆ THỐNG
+            </div>
+            <div class="main-content">
+                @RenderBody()
+            </div>
+            @*<div class="footer">
+                <div class="chuky">
+                    <p>Design by</p>
+                    <img src="~/images/@Url.Content("duy.png")" /> &copy; 2020
+                </div>
+            </div>*@
+        </div>
+        <!-- content right -->
+    </div>
+    <script>
+        var submenu = document.querySelectorAll('.nav-item');
+        submenu.forEach(item => {
+            item.addEventListener('click', (e) => {
+                var subitem = item.children[1];
+                if(subitem != undefined)
+                subitem.classList.toggle('active');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+﻿@model Project.Models.blog
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+<div class="panel-title">Blog - Tạo chủ đề mới</div>
+
+@using (Html.BeginForm("Create", "Blog", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="text-danger">@ViewBag.Msg</div>
+    if (ViewBag.Success != null)
+    {
+        <div class="msg-success">@Html.Raw(ViewBag.Success)</div>
+    }
+<div class="form-horizontal">
+
+    <div class="form-group">
+        <p>Tiêu đề (VI)</p>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.blog_title, new { htmlAttributes = new { @class = "form-control",required="required" } })
+            @Html.ValidationMessageFor(model => model.blog_title, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p>Nội dung (VI)</p>
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.blog_msg, 5, 5, new { @class = "form-control",required="required" })
+            @Html.ValidationMessageFor(model => model.blog_msg, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="phantrang"></div>
+
+    <div class="form-group">
+        <p>Tiêu đề (EN)</p>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.blog_title_en, new { htmlAttributes = new { @class = "form-control",required="required" } })
+            @Html.ValidationMessageFor(model => model.blog_title, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p>Nội dung (EN)</p>
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.blog_msg_en, 5, 5, new { @class = "form-control",required="required" })
+            @Html.ValidationMessageFor(model => model.blog_msg, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <p>Ảnh đại diện</p>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.thumbnail, new { htmlAttributes = new { @class = "form-control", type = "file", required = "required" } })
+            @Html.ValidationMessageFor(model => model.thumbnail, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to Index", "Index", "Admin", null, htmlAttributes: null)
+</div>
+<script src="~/Content/ckeditor/ckeditor.js"></script>
+<script src="~/Content/ckfinder/ckfinder.js"></script>
+<script>
+    CKEDITOR.replace('blog_msg');
+    CKEDITOR.replace('blog_msg_en');
+</script>

@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="article">
+    <Key>
+      <PropertyRef Name="article_id" />
+    </Key>
+    <Property Name="article_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="category_id" Type="Int32" Nullable="false" />
+    <Property Name="article_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="created_at" Type="DateTime" Precision="3" />
+    <Property Name="tags" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="views" Type="Int32" />
+    <Property Name="status" Type="Int32" />
+    <Property Name="user_id" Type="Int32" />
+    <NavigationProperty Name="Category" Relationship="Self.FK__article__categor__2A4B4B5E" FromRole="article" ToRole="Category" />
+    <NavigationProperty Name="User" Relationship="Self.FK__article__user_id__2B3F6F97" FromRole="article" ToRole="Users" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK__Comment__article__2E1BDC42" FromRole="article" ToRole="Comment" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="category_id" />
+    </Key>
+    <Property Name="category_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="category_name" Type="String" MaxLength="70" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="articles" Relationship="Self.FK__article__categor__2A4B4B5E" FromRole="Category" ToRole="article" />
+  </EntityType>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="cmt_id" />
+    </Key>
+    <Property Name="cmt_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="created_at" Type="Int32" />
+    <Property Name="article_id" Type="Int32" />
+    <Property Name="user_id" Type="Int32" />
+    <NavigationProperty Name="article" Relationship="Self.FK__Comment__article__2E1BDC42" FromRole="Comment" ToRole="article" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Comment__user_id__2F10007B" FromRole="Comment" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Role">
+    <Key>
+      <PropertyRef Name="role_id" />
+    </Key>
+    <Property Name="role_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="role_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="user_id" Type="Int32" />
+    <NavigationProperty Name="User" Relationship="Self.FK__Roles__user_id__25869641" FromRole="Roles" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="user_id" />
+    </Key>
+    <Property Name="user_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="username" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="250" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="fullname" Type="String" MaxLength="70" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="birthday" Type="DateTime" Precision="0" />
+    <Property Name="address" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+    <Property Name="post" Type="Int32" />
+    <NavigationProperty Name="articles" Relationship="Self.FK__article__user_id__2B3F6F97" FromRole="Users" ToRole="article" />
+    <NavigationProperty Name="Comments" Relationship="Self.FK__Comment__user_id__2F10007B" FromRole="Users" ToRole="Comment" />
+    <NavigationProperty Name="Roles" Relationship="Self.FK__Roles__user_id__25869641" FromRole="Users" ToRole="Roles" />
+  </EntityType>
+  <Association Name="FK__article__categor__2A4B4B5E">
+    <End Role="Category" Type="Self.Category" Multiplicity="1" />
+    <End Role="article" Type="Self.article" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="category_id" />
+      </Principal>
+      <Dependent Role="article">
+        <PropertyRef Name="category_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__article__user_id__2B3F6F97">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="article" Type="Self.article" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="article">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Comment__article__2E1BDC42">
+    <End Role="article" Type="Self.article" Multiplicity="0..1" />
+    <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="article">
+        <PropertyRef Name="article_id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="article_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Comment__user_id__2F10007B">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Comment">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Roles__user_id__25869641">
+    <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+    <End Role="Roles" Type="Self.Role" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="user_id" />
+      </Principal>
+      <Dependent Role="Roles">
+        <PropertyRef Name="user_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="NewspaperEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="articles" EntityType="Self.article" />
+    <EntitySet Name="Categories" EntityType="Self.Category" />
+    <EntitySet Name="Comments" EntityType="Self.Comment" />
+    <EntitySet Name="Roles" EntityType="Self.Role" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK__article__categor__2A4B4B5E" Association="Self.FK__article__categor__2A4B4B5E">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="article" EntitySet="articles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__article__user_id__2B3F6F97" Association="Self.FK__article__user_id__2B3F6F97">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="article" EntitySet="articles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Comment__article__2E1BDC42" Association="Self.FK__Comment__article__2E1BDC42">
+      <End Role="article" EntitySet="articles" />
+      <End Role="Comment" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Comment__user_id__2F10007B" Association="Self.FK__Comment__user_id__2F10007B">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Comment" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Roles__user_id__25869641" Association="Self.FK__Roles__user_id__25869641">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Roles" EntitySet="Roles" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

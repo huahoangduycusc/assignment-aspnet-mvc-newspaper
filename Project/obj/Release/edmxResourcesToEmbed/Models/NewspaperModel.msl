@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Database1ModelStoreContainer" CdmEntityContainer="NewspaperEntities">
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="Database1Model.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="category_name" ColumnName="category_name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="Database1Model.Comment">
+        <MappingFragment StoreEntitySet="Comment">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="article_id" ColumnName="article_id" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="message" ColumnName="message" />
+          <ScalarProperty Name="cmt_id" ColumnName="cmt_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="Database1Model.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="favourite" ColumnName="favourite" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="avatar" ColumnName="avatar" />
+          <ScalarProperty Name="timeJoin" ColumnName="timeJoin" />
+          <ScalarProperty Name="role" ColumnName="role" />
+          <ScalarProperty Name="post" ColumnName="post" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="birthday" ColumnName="birthday" />
+          <ScalarProperty Name="gender" ColumnName="gender" />
+          <ScalarProperty Name="fullname" ColumnName="fullname" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="likes">
+      <EntityTypeMapping TypeName="Database1Model.like">
+        <MappingFragment StoreEntitySet="likes">
+          <ScalarProperty Name="camxuc" ColumnName="camxuc" />
+          <ScalarProperty Name="article_id" ColumnName="article_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="like_id" ColumnName="like_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="articles">
+      <EntityTypeMapping TypeName="Database1Model.article">
+        <MappingFragment StoreEntitySet="article">
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="ghim" ColumnName="ghim" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="views" ColumnName="views" />
+          <ScalarProperty Name="tags" ColumnName="tags" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="thumbnail" ColumnName="thumbnail" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="article_name" ColumnName="article_name" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="article_id" ColumnName="article_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

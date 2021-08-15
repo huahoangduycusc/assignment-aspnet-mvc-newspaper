@@ -1,0 +1,79 @@
+﻿@model IPagedList<Project.Models.article>
+
+@{
+    ViewBag.Title = "Bài viết của bạn";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+    <div class="panel-title">Danh sách bài viết của bạn</div>
+<table class="table">
+    <tr>
+        <th>
+            Tên
+        </th>
+        <th>
+            Thumbnail
+        </th>
+        <th>
+            Ngày tạo
+        </th>
+        <th>
+            Xem
+        </th>
+        <th>
+            Status
+        </th>
+        <th>Panel</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("View", "Article", new { id = item.article_id })">@item.article_name</a>
+            </td>
+            <td>
+                <img style="width:100px;" src="~/images/thumbnail/@Url.Content(item.thumbnail)" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_at)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.views)
+            </td>
+            <td>
+                @{ 
+                    if(item.status == 0)
+                    {
+                        <font color="red">Đang chờ duyệt</font>
+                    }
+                    else
+                    {
+                        <font color="green">Đã được đăng lên</font>
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (item.status == 0)
+                    {
+                        <a href="@Url.Action("EditWaiting", "Article", new { id = @item.article_id })" class="btn btn-warning">Edit</a>
+                    }
+                    else
+                    {
+                       <p>No control</p>
+                    }
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+@if(Model.Count() == 0)
+{
+    <div class="empty">Hiện chưa có bài viết nào</div>
+}
+@Html.PagedListPager(Model, page => Url.Action("YourArticle", "Article", new { page }))

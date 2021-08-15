@@ -1,0 +1,110 @@
+﻿@model Project.Models.viewBlog
+
+@{
+    ViewBag.Title = Model.title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    HttpCookie cookie = HttpContext.Current.Request.Cookies["Language"];
+    if (cookie != null && cookie.Value == "en-US")
+    {
+        ViewBag.Title = Model.title_en;
+    }
+}
+<section class="blog">
+    <div class="blog-container">
+        <div class="blog-header">
+            <a href="@Url.Action("Index","Home")">Home</a> <i class="fas fa-angle-right"></i> <a href="@Url.Action("Index","Blog")">Blog</a> <i class="fas fa-angle-right"></i>
+            @{
+                if (cookie != null && cookie.Value == "en-US")
+                {
+                    @Model.title_en
+                }
+                else
+                {
+                    @Model.title
+                }
+            }
+        </div>
+    </div>
+    <!-- blog header -->
+    <div class="blog-thumbnail">
+        <div class="blog-img">
+            <img src="~/images/thumbnail/@Url.Content(Model.thumbnail)" alt="">
+        </div>
+        <div class="blog-title">
+            @{
+                if (cookie != null && cookie.Value == "en-US")
+                {
+                    <h2>@Model.title_en</h2>
+                }
+                else
+                {
+                    <h2>@Model.title</h2>
+                }
+            }
+            <p class="blog-time">
+                @Project.Resources.MyText.Posted @Model.created_at
+            </p>
+            <div class="blog-share">
+                <a href="http://www.facebook.com/sharer/sharer.php?u=@Request.Url.OriginalString&t=@Model.title"><i class="fab fa-facebook-f"></i></a>
+                <a href="http://www.twitter.com/intent/tweet?url=@Request.Url.OriginalString&via=TWITTER_HANDLE_HERE&text=@Model.title"><i class="fab fa-twitter"></i></a>
+                <a href="http://plus.google.com/share?url=@Request.Url.OriginalString"><i class="fab fa-google-plus-g"></i></a>
+            </div>
+        </div>
+        <!-- blog title -->
+    </div>
+    <!-- blog thumn -->
+    <div class="blog-body">
+        <table class="blog-table">
+            <tr>
+                <td class="blog-author">
+                    <a href="@Url.Action("Index","User",new {id=Model.uid })">
+                        <img src="~/images/profile/@Url.Content(Model.avatar)" alt="">
+                    </a>
+                    <div class="blog-post">
+                        @Project.Resources.MyText.Bai: @Model.post
+                    </div>
+                </td>
+                <td class="blog-right">
+                    <div class="blog-author">
+                        <a href="@Url.Action("Index","User",new {id=Model.uid })">
+                            @{
+                                if (Model.role == "admin")
+                                {
+                                    <b style="color:#FF5159;font-size:11pt">@Model.nickname - Admin</b>
+                                }
+                                if (Model.role == "btv")
+                                {
+                                    <b style="color:green;font-size:11pt">@Model.nickname - @Project.Resources.MyText.Tbt</b>
+                                }
+                                if (Model.role == "nb")
+                                {
+                                    <b style="color:DarkOrchid;font-size:11pt">@Model.nickname - @Project.Resources.MyText.Nb</b>
+                                }
+                                if (Model.role == "ctv")
+                                {
+                                    <b style="color:#EA9415;font-size:11pt">@Model.nickname - @Project.Resources.MyText.Ctv</b>
+                                }
+                                if (Model.role == "mem")
+                                {
+                                    <b style="color:#013481;font-size:11pt">@Model.nickname</b>
+                                }
+                            }
+                        </a>
+                    </div>
+                    <div class="blog-body-msg">
+                        @{
+                            if (cookie != null && cookie.Value == "en-US")
+                            {
+                                @Html.Raw(Model.msg_en)
+                            }
+                            else
+                            {
+                                @Html.Raw(Model.msg)
+                            }
+                        }
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</section>

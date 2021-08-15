@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="newspaperModelStoreContainer" CdmEntityContainer="NewspaperEntities">
+    <EntitySetMapping Name="articles">
+      <EntityTypeMapping TypeName="newspaperModel.article">
+        <MappingFragment StoreEntitySet="article">
+          <ScalarProperty Name="article_id" ColumnName="article_id" />
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="article_name" ColumnName="article_name" />
+          <ScalarProperty Name="description" ColumnName="description" />
+          <ScalarProperty Name="article_name_en" ColumnName="article_name_en" />
+          <ScalarProperty Name="description_en" ColumnName="description_en" />
+          <ScalarProperty Name="thumbnail" ColumnName="thumbnail" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="tags" ColumnName="tags" />
+          <ScalarProperty Name="views" ColumnName="views" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="ghim" ColumnName="ghim" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="blogs">
+      <EntityTypeMapping TypeName="newspaperModel.blog">
+        <MappingFragment StoreEntitySet="blog">
+          <ScalarProperty Name="blog_id" ColumnName="blog_id" />
+          <ScalarProperty Name="blog_title" ColumnName="blog_title" />
+          <ScalarProperty Name="blog_msg" ColumnName="blog_msg" />
+          <ScalarProperty Name="blog_title_en" ColumnName="blog_title_en" />
+          <ScalarProperty Name="blog_msg_en" ColumnName="blog_msg_en" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="thumbnail" ColumnName="thumbnail" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Categories">
+      <EntityTypeMapping TypeName="newspaperModel.Category">
+        <MappingFragment StoreEntitySet="Category">
+          <ScalarProperty Name="category_id" ColumnName="category_id" />
+          <ScalarProperty Name="category_name" ColumnName="category_name" />
+          <ScalarProperty Name="category_name_en" ColumnName="category_name_en" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cms_contact">
+      <EntityTypeMapping TypeName="newspaperModel.cms_contact">
+        <MappingFragment StoreEntitySet="cms_contact">
+          <ScalarProperty Name="contact_id" ColumnName="contact_id" />
+          <ScalarProperty Name="from_user" ColumnName="from_user" />
+          <ScalarProperty Name="to_user" ColumnName="to_user" />
+          <ScalarProperty Name="message" ColumnName="message" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="mail_id" ColumnName="mail_id" />
+          <ScalarProperty Name="seen" ColumnName="seen" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cms_mail">
+      <EntityTypeMapping TypeName="newspaperModel.cms_mail">
+        <MappingFragment StoreEntitySet="cms_mail">
+          <ScalarProperty Name="mail_id" ColumnName="mail_id" />
+          <ScalarProperty Name="from_user" ColumnName="from_user" />
+          <ScalarProperty Name="to_user" ColumnName="to_user" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="spam" ColumnName="spam" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Comments">
+      <EntityTypeMapping TypeName="newspaperModel.Comment">
+        <MappingFragment StoreEntitySet="Comment">
+          <ScalarProperty Name="cmt_id" ColumnName="cmt_id" />
+          <ScalarProperty Name="message" ColumnName="message" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="article_id" ColumnName="article_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="report" ColumnName="report" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="follows">
+      <EntityTypeMapping TypeName="newspaperModel.follow">
+        <MappingFragment StoreEntitySet="follow">
+          <ScalarProperty Name="follow_id" ColumnName="follow_id" />
+          <ScalarProperty Name="from_user" ColumnName="from_user" />
+          <ScalarProperty Name="to_user" ColumnName="to_user" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="likes">
+      <EntityTypeMapping TypeName="newspaperModel.like">
+        <MappingFragment StoreEntitySet="likes">
+          <ScalarProperty Name="like_id" ColumnName="like_id" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="article_id" ColumnName="article_id" />
+          <ScalarProperty Name="camxuc" ColumnName="camxuc" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="statistics">
+      <EntityTypeMapping TypeName="newspaperModel.statistic">
+        <MappingFragment StoreEntitySet="statistic">
+          <ScalarProperty Name="sta_id" ColumnName="sta_id" />
+          <ScalarProperty Name="article_id" ColumnName="article_id" />
+          <ScalarProperty Name="view" ColumnName="view" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="thongbaos">
+      <EntityTypeMapping TypeName="newspaperModel.thongbao">
+        <MappingFragment StoreEntitySet="thongbao">
+          <ScalarProperty Name="tb_id" ColumnName="tb_id" />
+          <ScalarProperty Name="msg" ColumnName="msg" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+          <ScalarProperty Name="seen" ColumnName="seen" />
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Users">
+      <EntityTypeMapping TypeName="newspaperModel.User">
+        <MappingFragment StoreEntitySet="Users">
+          <ScalarProperty Name="avatar" ColumnName="avatar" />
+          <ScalarProperty Name="timeJoin" ColumnName="timeJoin" />
+          <ScalarProperty Name="role" ColumnName="role" />
+          <ScalarProperty Name="post" ColumnName="post" />
+          <ScalarProperty Name="favourite" ColumnName="favourite" />
+          <ScalarProperty Name="phone" ColumnName="phone" />
+          <ScalarProperty Name="address" ColumnName="address" />
+          <ScalarProperty Name="birthday" ColumnName="birthday" />
+          <ScalarProperty Name="gender" ColumnName="gender" />
+          <ScalarProperty Name="nickname" ColumnName="nickname" />
+          <ScalarProperty Name="fullname" ColumnName="fullname" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="password" ColumnName="password" />
+          <ScalarProperty Name="username" ColumnName="username" />
+          <ScalarProperty Name="user_id" ColumnName="user_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="feedbacks">
+      <EntityTypeMapping TypeName="newspaperModel.feedback">
+        <MappingFragment StoreEntitySet="feedback">
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="seen" ColumnName="seen" />
+          <ScalarProperty Name="message" ColumnName="message" />
+          <ScalarProperty Name="title" ColumnName="title" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="fb_id" ColumnName="fb_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="blocks">
+      <EntityTypeMapping TypeName="newspaperModel.block">
+        <MappingFragment StoreEntitySet="block">
+          <ScalarProperty Name="created_at" ColumnName="created_at" />
+          <ScalarProperty Name="block_lydo" ColumnName="block_lydo" />
+          <ScalarProperty Name="block_from" ColumnName="block_from" />
+          <ScalarProperty Name="block_time" ColumnName="block_time" />
+          <ScalarProperty Name="block_user" ColumnName="block_user" />
+          <ScalarProperty Name="block_id" ColumnName="block_id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

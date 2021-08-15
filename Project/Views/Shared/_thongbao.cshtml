@@ -1,0 +1,10 @@
+﻿@model IEnumerable<Project.Models.thongbao>
+
+@if (Model.Count() == 0)
+{
+    <a href="@Url.Action("Notifications", "User")"><i class="far fa-bell"></i>@Model.Count() @Project.Resources.MyText.Noti</a>
+}
+else
+{
+<a href="@Url.Action("Notifications", "User")"><i class="fas fa-bell"></i>@Model.Count() @Project.Resources.MyText.Noti</a>
+}

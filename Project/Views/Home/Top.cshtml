@@ -1,0 +1,183 @@
+﻿@model Project.Models.bangxephang
+@using Project.Models
+
+@{
+    ViewBag.Title = "Top - Bảng xếp hàng bài viết";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    HttpCookie cookie = HttpContext.Current.Request.Cookies["Language"];
+}
+
+<div class="fit">
+    <div class="back-category">
+        <img src="~/images/category.jpg" alt="">
+        <div class="category-title">
+            <div class="category-title-header">
+                <p>Explore</p>
+                <h1>@Project.Resources.MyText.Chart</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="spotlight">
+    <div class="fit">
+        @if (Model != null)
+        {
+        <div class="col-duy-4">
+            <h2 class="title-highlight">@Project.Resources.MyText.hotToday</h2>
+            <div class="list">
+                @foreach (var item in Model.TopDay)
+                {
+                    <div class="wrapper">
+                        <div class="wrapper-thumbnail">
+                            @{
+                                if (cookie != null && cookie.Value == "en-US")
+                                {
+                                    <a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name_en) })"><img src="~/images/thumbnail/@Url.Content(item.img)" alt=""></a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })"><img src="~/images/thumbnail/@Url.Content(item.img)" alt=""></a>
+                                }
+                            }
+                        </div>
+                        <div class="wrapper-infor">
+                            <a href="@Url.Action("Category","Home",new {id=@item.cid })" class="category-name">
+                                @{
+                                    if (cookie != null && cookie.Value == "en-US")
+                                    {
+                                        @item.cate_en
+                                    }
+                                    else
+                                    {
+                                        @item.cate
+                                    }
+                                }
+                            </a>
+                            <span class="times">@item.day</span>
+                            <h2 class="title">
+                                @{
+                                    if (cookie != null && cookie.Value == "en-US")
+                                    {
+                                        <a href="@Url.Action("View","Article",new {id=item.aid,title=UrlEncoder.ToFriendlyUrl(item.name_en) })">@item.name_en</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("View","Article",new {id=item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })">@item.name</a>
+                                    }
+                                }
+                            </h2>
+                            <p><i class="fas fa-eye"></i> @item.view @Project.Resources.MyText.View</p>
+                        </div>
+                    </div>
+                    <!-- wrapper -->
+                }
+            </div>
+            <!-- list -->
+            <h2 class="title-highlight">@Project.Resources.MyText.hotWeek</h2>
+            <div class="list">
+                @foreach (var item in Model.TopWeek)
+                {
+                    <div class="wrapper">
+                        <div class="wrapper-thumbnail">
+                            @{
+                                if (cookie != null && cookie.Value == "en-US")
+                                {
+                                    <a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name_en) })"><img src="~/images/thumbnail/@Url.Content(item.img)" alt=""></a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })"><img src="~/images/thumbnail/@Url.Content(item.img)" alt=""></a>
+                                }
+                            }
+                        </div>
+                        <div class="wrapper-infor">
+                            <a href="@Url.Action("Category","Home",new {id=@item.cid })" class="category-name">
+                                @{
+                                    if (cookie != null && cookie.Value == "en-US")
+                                    {
+                                        @item.cate_en
+                                    }
+                                    else
+                                    {
+                                        @item.cate
+                                    }
+                                }
+                            </a>
+                            <span class="times">@item.day</span>
+                            <h2 class="title">
+                                @{
+                                    if (cookie != null && cookie.Value == "en-US")
+                                    {
+                                        <a href="@Url.Action("View","Article",new {id=item.aid,title=UrlEncoder.ToFriendlyUrl(item.name_en) })">@item.name_en</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("View","Article",new {id=item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })">@item.name</a>
+                                    }
+                                }
+                            </h2>
+                            <p><i class="fas fa-eye"></i> @item.view @Project.Resources.MyText.View</p>
+                        </div>
+                    </div>
+                    <!-- wrapper -->
+                }
+            </div>
+            <!-- list -->
+        </div>
+            <!-- col duy 4 -->
+        }
+        <div class="col-duy-8">
+            <h2 class="title-highlight">@Project.Resources.MyText.hotMonth</h2>
+            <div class="list-topic">
+                @foreach (var item in Model.TopMonth)
+                {
+                    <div class="list-topic-item">
+                        <div class="topic-item-thumbnail">
+                            @{
+                                if (cookie != null && cookie.Value == "en-US")
+                                {
+                                    <a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name_en) })"><img src="~/images/thumbnail/@Url.Content(item.img)" alt=""></a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })"><img src="~/images/thumbnail/@Url.Content(item.img)" alt=""></a>
+                                }
+                            }
+                        </div>
+                        <div class="topic-item-infor">
+                            <a href="@Url.Action("Category","Home",new{id=@item.cid})" class="category-name">
+                                @{
+                                    if (cookie != null && cookie.Value == "en-US")
+                                    {
+                                        @item.cate_en
+                                    }
+                                    else
+                                    {
+                                        @item.cate
+                                    }
+                                }
+                            </a>
+                            <span class="times">@item.day</span>
+                            <h2 class="title">
+                                @{
+                                    if (cookie != null && cookie.Value == "en-US")
+                                    {
+                                        <a href="@Url.Action("View","Article",new {id=item.aid,title=UrlEncoder.ToFriendlyUrl(item.name_en) })">@item.name_en</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action("View","Article",new {id=item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })">@item.name</a>
+                                    }
+                                }
+                            </h2>
+                            <p><i class="fas fa-eye"></i> @item.view @Project.Resources.MyText.View</p>
+                        </div>
+                    </div>
+                    <!-- list topic item -->
+                }
+            </div>
+            <!-- list topic -->
+        </div>
+    </div>
+</section>

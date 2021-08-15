@@ -1,0 +1,227 @@
+﻿@model Project.Models.User
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div class="profile">
+    <div class="fit">
+        <div class="profile-avatar">
+            <img src="~/images/profile/@Url.Content(Model.avatar)" alt="">
+            @if(TempData["CountFollow"] != null && (int)TempData["CountFollow"] > 0)
+            {
+                <p>Có <b>@TempData["CountFollow"]</b> người theo dõi</p>
+            }
+        </div>
+        <div class="profile-infor">
+            @{
+                if (Model.role == "admin")
+                {
+                    <h2 style="color:#FF5159;font-size:12pt">@Model.nickname - Admin</h2>
+                }
+                if (Model.role == "btv")
+                {
+                    <h2 style="color:green;font-size:12pt">@Model.username - @Project.Resources.MyText.Tbt</h2>
+                }
+                if (Model.role == "nb")
+                {
+                    <h2 style="color:DarkOrchid;font-size:12pt">@Model.username - @Project.Resources.MyText.Nb</h2>
+                }
+                if (Model.role == "ctv")
+                {
+                    <h2 style="color:#EA9415;font-size:12pt">@Model.username - @Project.Resources.MyText.Ctv</h2>
+                }
+                if (Model.role == "mem")
+                {
+                    <h2 style="color:#013481;font-size:12pt">@Model.username</h2>
+                }
+
+            }
+            @if (Model.address != null)
+            {
+                <p><i class="fas fa-map-marker"></i> @Model.address</p>
+            }
+            <p><i class="fas fa-comment"></i> @Model.post Post</p>
+            <p><i class="fas fa-venus-mars"></i> @Model.gender</p>
+            @if (Model.phone != null)
+            {
+                <p><i class="fas fa-phone"></i> @Model.phone</p>
+            }
+        </div>
+        <div class="profile-setting">
+            @if (User.IsInRole("admin") || Session["uid"] != null && Session["uid"].ToString() == Model.user_id.ToString())
+            {
+                <a href="@Url.Action("Setting","User",new {id=Model.user_id })" class="btn-setting"><i class="fas fa-cog"></i> Thiết lập</a>
+            }
+            @if (Session["uid"] != null && (int)Session["uid"] == Model.user_id)
+            {
+                <a href="@Url.Action("ChangePassword","User")" class="btn-setting"><i class="fas fa-exchange-alt"></i> Đổi mật khẩu</a>
+            }
+            @if (Session["uid"] != null && (int)Session["uid"] != Model.user_id)
+            {
+                { Html.RenderAction("checkFollow", "User", new { id = @Model.user_id }); }
+                <a href="@Url.Action("Chat","Mail",new {id=Model.user_id })" class="btn-setting"><i class="fas fa-envelope"></i> Nhắn tin</a>
+            }
+            @if (User.IsInRole("admin") && Session["uid"] != null && (int)Session["uid"] != Model.user_id)
+            {
+                <a href="@Url.Action("Index","Block",new {id=Model.user_id })" class="btn-setting block-user"><i class="fas fa-user-lock"></i> Khóa</a>
+            }
+        </div>
+    </div>
+</div>
+<!-- profile div -->
+<section class="profile-line">
+    <div class="fit">
+        <div class="col-duy-4">
+            <div class="profile-start">
+                <p><i class="far fa-clock"></i> Gia nhập: @Model.timeJoin</p>
+                @if (Model.birthday != null)
+                {
+                    <p><i class="fas fa-calendar-alt"></i> Sinh nhật: @Model.birthday</p>
+                }
+                @if (Model.favourite != null)
+                {
+                    <p><i class="fas fa-candy-cane"></i> Sở thích: @Model.favourite</p>
+                }
+                <p><i class="fas fa-search"></i> 
+                <a href="@Url.Action("Search","User",new {id=Model.user_id })">Bài viết đã đăng</a></p>
+            </div>
+        </div>
+        <!-- col duy 4 -->
+        <div class="col-duy-8">
+            <div class="list-comment" id="cmt">
+                @{Html.RenderAction("viewProfile", "User", new { id_user = Model.user_id });}
+            </div>
+            <!-- list comment -->
+            @if (TempData["countPost"] != null && (int)TempData["countPost"] > 5)
+            {
+                <div class="load-bg">
+                    <a href="" id="getMore" class="load_more_bg">Load more</a>
+                </div>
+            }
+            else if((int)TempData["countPost"] == 0)
+            {
+                <div class="empty">Hiện chưa có bất kỳ bình luận nào của <b>@Model.username</b></div>
+            }
+        </div>
+        <!-- col duy 8 -->
+    </div>
+</section>
+<div class="feedback-container">
+    <div class="feedback-fixed">
+        <div class="feedback-title">KHÓA NICK</div>
+        @using (Html.BeginForm("Index", "Block", FormMethod.Post, new { id = "form_block" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="feedback-msg">
+                <p id="json"></p>
+            </div>
+            <div class="feedback-txt">
+                <p>Lý do</p>
+                <input type="text" name="lydo" id="lydo" placeholder="Lý do" required>
+            </div>
+            <div class="feedback-txt">
+                <p>Khóa đến ngày</p>
+                <input type="date" name="date" id="date" required>
+            </div>
+            <div class="feedback-submit">
+                <button type="submit" id="btn_send">Xác nhận</button>
+            </div>
+        }
+        <a href="" class="close"><i class="fas fa-times"></i></a>
+    </div>
+    <div class="sign-owner">
+        <p>Design by</p>
+        <img src="~/images/@Url.Content("duy.png")" alt="">
+    </div>
+</div>
+<script>
+    var cmt = 5;
+    var skip = 5;
+    var flag = false;
+    $(document).ready(function () {
+        $('#getMore').click(function (e) {
+            e.preventDefault();
+            if (flag == true) {
+                return false;
+            }
+            flag = true;
+            $('#getMore').html("Loading..");
+            $.ajax({
+                url: '/User/viewProfile',
+                type: 'get',
+                cache: false,
+                data: {
+                    id_user: @Model.user_id,
+                    skip: cmt
+                },
+                success: function (data) {
+                    cmt += skip;
+                    if (data == "") {
+                        //alert("Hết dữ liệu");
+                        $('#getMore').fadeOut();
+                    }
+                    //alert(cmt);
+                    $('#cmt').append(data);
+                    $('#getMore').html("Load more");
+                    flag = false;
+                }
+            });
+        });
+    });
+</script>
+<script>
+        var click = document.querySelector(".block-user");
+        var feedback = document.querySelector(".feedback-container");
+        if (click) {
+            click.addEventListener('click', (e) => {
+                e.preventDefault();
+                $('#json').html('');
+                feedback.classList.toggle("actives");
+            });
+        }
+        var fb = document.querySelector(".feedback-fixed");
+        feedback.addEventListener('click', function (e) {
+            var div = e.target;
+            if (div.classList.contains('feedback-container')) {
+                feedback.classList.remove("actives");
+            }
+        });
+        var fb_close = document.querySelector('.close');
+        if (fb_close) {
+            fb_close.addEventListener('click', function (e) {
+                e.preventDefault();
+                feedback.classList.remove("actives");
+            });
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#form_block').submit(function () {
+                $.ajax({
+                    url: '/Block/Index',
+                    type: 'post',
+                    cache: false,
+                    data: {
+                        block_user:@Model.user_id,
+                        block_time: $('#date').val(),
+                        block_lydo: $('#lydo').val(),
+                    },
+                    success: function (result) {
+                        if (result != null) {
+                            feedback.classList.remove("actives");
+                            showPopup("Khóa thành công", result.msg, true);
+                        }
+                    },
+                    error: function () {
+                        showPopup("Lỗi", "Xảy ra lỗi khi xử lý yêu cầu !", true);
+                    }
+
+                });
+                return false;
+            });
+        });
+    </script>

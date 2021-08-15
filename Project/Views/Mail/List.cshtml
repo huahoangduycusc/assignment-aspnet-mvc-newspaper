@@ -1,0 +1,94 @@
+﻿@model IPagedList<Project.Models.hopthu>
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int user_id = (int)Session["uid"];
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<section class="profile-line">
+    <div class="fit">
+        <div class="col-duy-4">
+
+        </div>
+        <!-- col duy 4 -->
+        <div class="col-duy-8">
+            <h2 class="title-highlight">Hộp thư</h2>
+            <div class="list-mail">
+                @foreach (var item in Model)
+                {
+                    if (item.from_user != user_id)
+                    {
+                        <div class="list-mail-item">
+                            <div class="list-mail-avatar">
+                                <a href="@Url.Action("Index","User",new {id=item.from_user })">
+                                    <img src="~/images/profile/@Url.Content(item.avatar_from)" alt="">
+                                </a>
+                            </div>
+                            <div class="list-mail-content">
+                                <a href="@Url.Action("Chat","Mail",new {id=item.from_user })">
+                                    <span class="list-mail-user">
+                                        @item.name_from
+                                    </span>
+                                    <span class="list-mail-msg">
+                                        @item.message
+                                    </span>
+                                    <span class="list-mail-times">
+                                        @item.created_at
+                                    </span>
+                                </a>
+                                @if (item.seen > 0)
+                                {
+                                    <div class="seen1">@item.seen</div>
+                                }
+                            </div>
+                            <div class="list-mail-setting">
+                                @*<a href="ff" class="block" title="Chặn"><i class="fas fa-lock"></i></a>*@
+                                <a href="@Url.Action("Delete","Mail",new {id=item.mid,back=Request.Url.PathAndQuery })" class="block" title="Xóa" onclick="return confirm('Bạn có chắc muốn xóa?');"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                        </div>
+                        <!-- list mail item -->
+                    }
+                    if (item.to_user != user_id)
+                    {
+                        <div class="list-mail-item">
+                            <div class="list-mail-avatar">
+                                <a href="@Url.Action("Index","User",new {id=item.to_user })">
+                                    <img src="~/images/profile/@Url.Content(item.avatar_to)" alt="">
+                                </a>
+                            </div>
+                            <div class="list-mail-content">
+                                <a href="@Url.Action("Chat","Mail",new {id=item.to_user })">
+                                    <span class="list-mail-user">
+                                        @item.name_to
+                                    </span>
+                                    <span class="list-mail-msg">
+                                        @item.message
+                                    </span>
+                                    <span class="list-mail-times">
+                                        @item.created_at
+                                    </span>
+                                </a>
+                                @if (item.seen > 0)
+                                {
+                                    <div class="seen1">@item.seen</div>
+                                }
+                            </div>
+                            <div class="list-mail-setting">
+                                @*<a href="ff" class="block" title="Chặn"><i class="fas fa-lock"></i></a>*@
+                                <a href="@Url.Action("Delete","Mail",new {id=item.mid,back=Request.Url.PathAndQuery })" class="block" title="Xóa" onclick="return confirm('Bạn có chắc muốn xóa?');"><i class="fas fa-trash-alt"></i></a>
+                            </div>
+                        </div>
+                        <!-- list mail item -->
+                    }
+                }
+            </div>
+            <!-- list mail -->
+            @Html.PagedListPager(Model, page => Url.Action("List", "Mail", new { page }))
+        </div>
+        <!-- col duy 8 -->
+    </div>
+</section>

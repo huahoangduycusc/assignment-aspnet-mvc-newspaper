@@ -1,0 +1,151 @@
+﻿@model IPagedList<Project.Models.feedback>
+
+@{
+    ViewBag.Title = "Danh sách Feedback";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+    string loai = "chuaxem";
+    if (Request.QueryString["type"] == null)
+    {
+        loai = "chuaxem";
+    }
+    else
+    {
+        loai = Request.QueryString["type"];
+    }
+
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div class="panel-title">Danh sách Feedback từ người dùng</div>
+<div class="center">
+    <div class="col-duy-center">
+        <b>Lọc</b> <select id="loc" class="form-control" style="width:60%">
+            <option value="">Chọn lọc</option>
+            <option value="chuaxem">Feedback chưa xem</option>
+            <option value="daxem">Feedback đã xem</option>
+        </select>
+    </div>
+</div>
+<table class="table">
+    <tr>
+        <th>Email</th>
+        <th>Tiêu đề</th>
+        <th>Gửi lúc</th>
+        <th>Status</th>
+        <th>Panel</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.email
+            </td>
+            <td>
+                @item.title
+            </td>
+            <td>
+                @item.created_at
+            </td>
+            <td>
+                @{
+                    if (item.seen == 0)
+                    {
+                        <font color="red">Chưa xem</font>
+                    }
+                    else
+                    {
+                        <font color="green">Đã xem</font>
+                    }
+                }
+            </td>
+            <td>
+                <a href="" data-id="@item.fb_id" class="btn-success">Xem</a>
+                <a href="@Url.Action("Delete","Feedback",new {id=item.fb_id })" class="btn-danger" onclick="return confirm('Bạn có chắc muốn xóa feedback này?');">Del</a>
+            </td>
+        </tr>
+    }
+
+</table>
+<div class="phanhoi-container">
+    <div class="phanhoi-form">
+        <div class="phanhoi-title">
+            <img src="~/icon/fb.png" alt="">
+        </div>
+        <div class="phanhoi-bg">
+            <h2 id="title">Title</h2>
+            <div class="phanhoi-body">
+                <div class="close-phanhoi">
+                    Đóng
+                </div>
+                <div class="phanhoi-author">
+                    <span>Người gửi</span> <a href="" id="email">email</a>
+                </div>
+                <div class="phanhoi-text" id="msg">
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Laboriosam, sequi rem officia sapiente incidunt
+                    asperiores, ducimus, magni necessitatibus est numquam facere reprehende
+                    rit eveniet illum itaque cumque saepe ratione blanditiis eius.
+                </div>
+                <p class="phanhoi-time" id="times">
+                    Semt 22, 2020
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@Html.PagedListPager(Model, page => Url.Action("List", "Feedback", new { page, type = loai }))
+<script>
+    document.getElementById("loc").onchange = function (event) {
+        let type = this.value;
+        window.location.href = '/Feedback/List?type=' + type;
+    };
+</script>
+<script>
+    var view_fb = document.querySelectorAll('.btn-success');
+    view_fb.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            var fb_id = item.getAttribute('data-id');
+            //alert(fb_id);
+            $.ajax({
+                url: '/Feedback/View',
+                type: 'get',
+                cache: false,
+                data: {
+                    id: fb_id
+                },
+                success: function (result) {
+                    $('#title').html(result.title);
+                    $('#email').html(result.email);
+                    $('#msg').html(result.msg);
+                    $('#times').html(result.dates);
+                    $('.phanhoi-container').addClass('actives-phanhoi');
+                },
+                error: function () {
+                    alert("There are something wrong, Duy ?");
+                }
+            });
+        });
+    });
+</script>
+<script>
+    var phanhoi = document.querySelector('.phanhoi-container');
+    var closePhanhoi = document.querySelector('.close-phanhoi');
+    if(phanhoi){
+        phanhoi.addEventListener('click',function(e){
+            var div = e.target;
+            if(div.classList.contains('phanhoi-container')){
+                phanhoi.classList.remove('actives-phanhoi');
+            }
+        });
+    }
+    if(closePhanhoi){
+        closePhanhoi.addEventListener('click',function(e){
+            phanhoi.classList.remove('actives-phanhoi');
+        });
+    }
+</script>

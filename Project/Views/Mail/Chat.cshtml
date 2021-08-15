@@ -1,0 +1,117 @@
+﻿@model IEnumerable<Project.Models.chatmail>
+
+@{
+    ViewBag.Title = "Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<input type="hidden" id="user" value="@TempData["to_user"]"/>
+<div class="mail-container">
+    <div class="mail-welcome">
+        <div class="center"><i class="fas fa-envelope"></i> Bạn đang nhắn tin với @TempData["chat_to"]</div>
+    </div>
+    <div class="mail-form">
+        @using (Html.BeginForm("Chat", "Mail", FormMethod.Post, new { id = TempData["to_user"] }))
+        {
+            <input type="text" name="message" id="message" required>
+            <button type="submit"><i class="fas fa-paper-plane"></i></button>
+            <input type="hidden" name="to_user" value="@TempData["to_user"]" />
+        }
+    </div>
+    <!-- mail form -->
+    <div class="mail-list" id="mail">
+        @foreach (var item in Model)
+        {
+            if (item.fuser == (int)Session["uid"])
+            {
+                <div class="mail-from">
+                    <div class="mail-avatar">
+                        <a href="@Url.Action("Index","User",new {id=item.fuser })">
+                            <img src="~/images/profile/@Url.Content(item.avatar_f  )" alt="">
+                        </a>
+                    </div>
+                    <!-- mail avatar -->
+                    <div class="mail-content">
+                        <div class="mail-msg">
+                            <p><a href="@Url.Action("Index","User",new {id=item.fuser })"><b>@item.from_u</b></a></p>
+                            @item.msg
+                        </div>
+                        <div class="mail-times">
+                            @item.created_at
+                        </div>
+                    </div>
+                </div>
+                <!-- mail from -->
+            }
+            else
+            {
+                <div class="mail-to">
+                    <div class="mail-content">
+                        <div class="mail-msg">
+                            <p><a href="@Url.Action("Index","User",new {id=item.fuser })"><b>@item.t_u</b></a></p>
+                            @item.msg
+                        </div>
+                        <div class="mail-times">
+                            @item.created_at
+                        </div>
+                    </div>
+                    <div class="mail-avatar">
+                        <a href="@Url.Action("Index","User",new {id=item.fuser })">
+                            <img src="~/images/profile/@Url.Content(item.avatar_t)" alt="">
+                        </a>
+                    </div>
+                    <!-- mail avatar -->
+                </div>
+                <!-- mail to -->
+            }
+        }
+
+    </div>
+    @*mail list*@
+</div>
+<!-- mail container -->
+@if (TempData["countText"] != null && (int)TempData["countText"] > 10)
+{
+    <div class="load-bg">
+        <a href="" id="getMore" class="load_more_bg">Load more</a>
+    </div>
+}
+else if(TempData["countText"] != null && (int)TempData["countText"] == 0)
+{
+    <div class="fit empty">Chưa có tin nhắn nào!</div>
+}
+<script>
+    var skip = 10;
+    var flag = false;
+    $(document).ready(function () {
+        $("#getMore").click(function (e) {
+            e.preventDefault();
+            if (flag == true) {
+                return false;
+            }
+            flag = true;
+            $("#getMore").html("Loading ...");
+            $.ajax({
+                url: '/Mail/getMessage',
+                type: 'get',
+                cache: false,
+                data: {
+                    id: $("#user").val(),
+                    skip:skip,
+                },
+                success: function (data) {
+                    skip += 10;
+                    if (data == "") {
+                        $("#getMore").fadeOut();
+                    }
+                    else {
+                        $("#mail").append(data);
+                        $("#getMore").html("Load more");
+                        flag = false;
+                    }
+                }
+            });
+
+        });
+    });
+</script>

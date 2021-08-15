@@ -1,0 +1,93 @@
+﻿@model Project.Models.ListTopFollow
+
+<div class="section music-chart">
+    <div class="fit"><h2 class="title-highlight">@Project.Resources.MyText.TopUser</h2></div>
+    <div class="chart-wrapper row">
+        <div class="firsttwo small-12 med-6">
+            @{
+                int i = 1;
+                if (Model.top2Follow.Count() != 0)
+                {
+                    foreach (var item in Model.top2Follow)
+                    {
+                        if (i == 1)
+                        {
+                            <a href="@Url.Action("Index","User",new {id=item.uid })" class="char-items even">
+                                <span class="album-art-wrapper">
+                                    <span class="numbers outlined" data-number="1">
+                                        1
+                                    </span>
+                                    <span class="album-image-wrapper">
+                                        <span class="bubble"></span>
+                                        <img src="~/images/profile/@Url.Content(item.avatar)">
+                                    </span>
+                                    <span class="album-background-hover"></span>
+                                </span>
+                                <!-- album -->
+                                <span class="item-info">
+                                    <span class="song-title">@item.nickname</span>
+                                    <span class="song-artist-album">@item.number followers</span>
+                                </span>
+                                <!-- infor -->
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Index","User",new {id=item.uid })" class="char-items odd">
+                                <span class="item-info">
+                                    <span class="song-title">@item.nickname</span>
+                                    <span class="song-artist-album">@item.number followers</span>
+                                </span>
+                                <!-- infor -->
+                                <span class="album-art-wrapper">
+                                    <span class="numbers outlined" data-number="2">
+                                        2
+                                    </span>
+                                    <span class="album-image-wrapper">
+                                        <span class="bubble"></span>
+                                        <img src="~/images/profile/@Url.Content(item.avatar)">
+                                    </span>
+                                    <span class="album-background-hover"></span>
+                                </span>
+                                <!-- album -->
+                            </a>
+                        }
+                        i++;
+                    }
+                }
+            }
+            <!-- one  -->
+        </div>
+        <!-- first two -->
+        @{
+            int j = 3;
+            if (Model.top8Follow.Count() != 0)
+            {
+                foreach (var item in Model.top8Follow)
+                {
+                    <div class="char-items lasteight small-6 med-3">
+                        <a href="@Url.Action("Index","User",new {id=item.uid })">
+                            <span class="album-art-wrapper">
+                                <span class="numbers">@j</span>
+                                <span class="album-image-wrapper">
+                                    <span class="bubble"></span>
+                                    <img src="~/images/profile/@Url.Content(item.avatar)">
+                                </span>
+                                <span class="album-background-hover"></span>
+                            </span>
+                            <!-- album -->
+                            <span class="item-info">
+                                <span class="song-title">@item.nickname</span>
+                                <span class="song-artist-album">@item.number Followers</span>
+                            </span>
+                            <!-- infor -->
+                        </a>
+                    </div>
+                    <!-- small col -->
+                    j++;
+                }
+            }
+        }
+    </div>
+</div>
+<!-- section music chart -->

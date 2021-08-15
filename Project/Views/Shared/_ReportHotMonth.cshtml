@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Project.Models.TopicStatistic>
+
+@if (Model.Count() != 0)
+{
+    foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("View", "Article", new { id = item.aid })">@item.title</a>
+            </td>
+            <td>
+                <a href="@Url.Action("Index","User",new {id=item.uid })">@item.username</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.comment)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_at)
+            </td>
+        </tr>
+    }
+}
+@if(Model.Count() == 0)
+{
+    <tr><td colspan="4"><div class="empty">Không tìm thấy kết quả nào phù hợp !</div></td></tr>
+}

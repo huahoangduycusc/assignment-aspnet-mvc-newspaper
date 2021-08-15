@@ -1,0 +1,213 @@
+﻿@model IEnumerable<Project.Models.baiviet>
+@using Project.Models
+@{
+    ViewBag.Title = "Home Page";
+    var ghim = TempData["ghim"] as Project.Models.baiviet;
+    HttpCookie cookie = HttpContext.Current.Request.Cookies["Language"];
+}
+
+<div class="fit">
+    <div class="col-duy-8">
+        @if (ghim != null)
+        {
+        <div class="article-trend">
+            <div class="article-trend-thumb">
+                <a href="@Url.Action("View","Article",new {id=@ghim.aid,title=UrlEncoder.ToFriendlyUrl(ghim.name) })"><img src="~/images/thumbnail/@Url.Content(ghim.img)" alt=""></a>
+            </div>
+            <div class="article-trend-info">
+                <h2 class="title">
+                    @{
+                        if (cookie != null && cookie.Value == "en-US")
+                        {
+                            <a href="@Url.Action("View","Article",new {id=@ghim.aid,title=UrlEncoder.ToFriendlyUrl(ghim.name_en) })">@ghim.name_en</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("View","Article",new {id=@ghim.aid,title=UrlEncoder.ToFriendlyUrl(ghim.name) })">@ghim.name</a>
+                        }
+                    }
+                </h2>
+                <a href="@Url.Action("Category","Home",new {id=@ghim.cid })" class="category-name">
+                    @{
+                        if (cookie != null && cookie.Value == "en-US")
+                        {
+                            @ghim.cate_en
+                        }
+                        else
+                        {
+                            @ghim.cate
+                        }
+                    }
+                </a>
+                <span class="times">@ghim.day</span>
+            </div>
+        </div>
+        }
+    </div>
+    <!-- col 8 -->
+    <div class="col-duy-4">
+        <h2 class="title-highlight">
+            <a href="#">@Project.Resources.MyText.Trending <i class="fas fa-angle-right"></i></a>
+        </h2>
+        @if (TempData["trend"] != null)
+        {
+            <div class="list">
+                @foreach (var item in TempData["trend"] as IEnumerable<Project.Models.baiviet>)
+                {
+                    <div class="wrapper">
+                        <div class="wrapper-thumbnail">
+                            <a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })"><img src="~/images/thumbnail/@Url.Content(item.img)" alt=""></a>
+                        </div>
+                        <div class="wrapper-infor">
+                            <a href="@Url.Action("Category","Home",new {id=item.cid })" class="category-name">
+                                @{
+                                    if (cookie != null && cookie.Value == "en-US")
+                                    {
+                                        @item.cate_en
+                                    }
+                                    else
+                                    {
+                                        @item.cate
+                                    }
+                                }
+                            </a>
+                            <span class="times">@item.day</span>
+                            @{
+                                if (cookie != null && cookie.Value == "en-US")
+                                {
+                                    <h2 class="title"><a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name_en) })">@item.name_en</a></h2>
+                                }
+                                else
+                                {
+                                    <h2 class="title"><a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })">@item.name</a></h2>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <!-- wrapper -->
+                }
+            </div>
+            <!-- list -->
+          }
+    </div>
+       <!-- col 4 -->
+</div>
+<!-- fit 1200 -->
+<section class="lasted">
+    <div class="fit">
+        <h2 class="title-highlight"><a href="#">@Project.Resources.MyText.News</a></h2>
+        <div class="images glide">
+            <div class="glide__track" data-glide-el="track">
+                @if (Model.Count() > 0)
+                {
+                    <ul class="glide__slides">
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                        <li class="glide__slide">
+                            <a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })"><img src="~/images/thumbnail/@Url.Content(item.img)" alt=""></a>
+                            <a href="@Url.Action("Category","Home",new {id=@item.cid })" class="category-name">
+                                @{
+                                    if (cookie != null && cookie.Value == "en-US")
+                                    {
+                                        @item.cate_en
+                                    }
+                                    else
+                                    {
+                                        @item.cate
+                                    }
+                                }
+                            </a>
+                            <span class="times">@item.day</span>
+                            @{
+                                if (cookie != null && cookie.Value == "en-US")
+                                {
+                                    <h2 class="title"><a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name_en) })">@item.name_en</a></h2>
+                                }
+                                else
+                                {
+                                    <h2 class="title"><a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })">@item.name</a></h2>
+                                }
+                            }
+                        </li>
+                            }
+
+                        }
+                    </ul>
+                }
+            </div>
+            <div class="glide__arrows" data-glide-el="controls">
+                <button class="glide__arrow glide__arrow--left" data-glide-dir="<"><i class="fas fa-arrow-left"></i></button>
+                <button class="glide__arrow glide__arrow--right" data-glide-dir=">"><i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- end section lasted -->
+<section class="watch">
+    <div class="fit">
+        <h2 class="title-highlight"><a href="@Url.Action("Category","Home",new {id=2 })">@Project.Resources.MyText.Tv</a></h2>
+        @if (TempData["trend"] != null)
+        {
+            <div class="list-topic">
+                @foreach (var item in TempData["tvShow"] as IEnumerable<Project.Models.baiviet>)
+                {
+                    <div class="list-topic-item">
+                        <div class="topic-item-thumbnail">
+                            <a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })"><img src="~/images/thumbnail/@Url.Content(item.img)" alt=""></a>
+                        </div>
+                        <div class="topic-item-infor">
+                            <a href="@Url.Action("Category","Home",new {id=@item.cid })" class="category-name">
+                                @{
+                                    if (cookie != null && cookie.Value == "en-US")
+                                    {
+                                        @item.cate_en
+                                    }
+                                    else
+                                    {
+                                        @item.cate
+                                    }
+                                }
+                            </a>
+                            <span class="times">@item.day</span>
+                            @{
+                                if (cookie != null && cookie.Value == "en-US")
+                                {
+                                    <h2 class="title"><a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name_en) })">@item.name_en</a></h2>
+                                }
+                                else
+                                {
+                                    <h2 class="title"><a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })">@item.name</a></h2>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <!-- list topic item -->
+                }
+            </div>
+         }
+     </div>
+</section>
+<!-- end section watch -->
+<section class="spotlight">
+    <div class="fit">
+        @{Html.RenderAction("topView","Article");}
+        @{Html.RenderAction("Spotlight","Article"); }
+    </div>
+</section>
+
+@*top follow section*@
+@{Html.RenderAction("TopFollow","User");}
+
+<section class="bg-white">
+    <div class="fit">
+        <h2 class="title-highlight">Blog</h2>
+    </div>
+    <section class="blog">
+        <div class="list-blog">
+            @{Html.RenderAction("ShowBlog", "Blog");}
+        </div>
+        <!-- list blog -->
+    </section>
+</section>

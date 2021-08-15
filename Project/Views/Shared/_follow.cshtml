@@ -1,0 +1,10 @@
+﻿@model Project.Models.follow
+
+@if (Model != null)
+{
+    <a href="@Url.Action("Follow", "User", new { id = Model.to_user })" class="btn-setting"><i class="fas fa-times"></i> Bỏ Theo dõi</a>
+}
+else
+{
+    <a href="@Url.Action("Follow","User",new {id=TempData["to_user"] })" class="btn-setting"><i class="fas fa-plus"></i> Theo dõi</a>
+}

@@ -1,0 +1,81 @@
+﻿@model IPagedList<Project.Models.User>
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="panel-title">Danh sách người dùng</div>
+@Html.ActionLink("Print", "printAllReport", "User", null, htmlAttributes: null)
+<table class="table">
+    <tr>
+        <th>
+           Username
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().fullname)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().role)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().avatar)
+        </th>
+        <th>Panel</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+               <a href="@Url.Action("Index","User",new {id=@item.user_id })">@item.username</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fullname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.gender)
+            </td>
+            <td>
+                @{
+                    if (item.role == "admin")
+                    {
+                        <h2 style="color:#FF5159;font-size:12pt">Administration</h2>
+                    }
+                    if (item.role == "btv")
+                    {
+                        <h2 style="color:green;font-size:12pt">Tổng Biên Tập</h2>
+                    }
+                    if (item.role == "nb")
+                    {
+                        <h2 style="color:DarkOrchid;font-size:12pt">Nhà Báo</h2>
+                    }
+                    if (item.role == "ctv")
+                    {
+                        <h2 style="color:#EA9415;font-size:12pt">Cộng Tác Viên</h2>
+                    }
+                    if (item.role == "mem")
+                    {
+                        <h2 style="color:#013481;font-size:12pt">Thành viên</h2>
+                    }
+
+                }
+            </td>
+            <td>
+                <img style="width:60px;" src="~/images/profile/@Url.Content(item.avatar)" />
+            </td>
+            <td>
+                <a href="@Url.Action("Setting", "User", new { id = item.user_id })" class="btn btn-warning">Edit</a>
+                <a href="@Url.Action("DelUser","User",new {id=item.user_id })" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa người dùng này không?')">Delete</a>
+            </td>
+        </tr>
+    }
+
+</table>
+@Html.PagedListPager(Model, page => Url.Action("List", "User", new { page }))

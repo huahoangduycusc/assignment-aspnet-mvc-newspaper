@@ -1,0 +1,76 @@
+﻿@model Project.Models.User
+
+@{
+    Layout = null;
+    ViewBag.Title = "Đăng ký tài khoản";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Project.Resources.MyText.Register</title>
+    <link rel="stylesheet" href="~/Content/login.css" />
+    <link rel="icon" href="~/icon/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="~/icon/apple-touch-icon.png" />
+</head>
+<body>
+    <div class="container">
+        <div class="login_form">
+            @using (Html.BeginForm())
+            {
+                <h2>@Project.Resources.MyText.Register</h2>
+                @Html.ValidationMessageFor(m => m.username, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.fullname, "", new { @class = "text-danger" })
+
+                <div class="text-danger">@ViewBag.Msg</div>
+                <div class="center green">@ViewBag.Success</div>
+                <div class="input_box">
+                    @Html.TextBoxFor(m => m.username, "", new { required = "required" })
+                    <div class="placeholder">@Project.Resources.MyText.Username:</div>
+                </div>
+                <div class="input_box">
+                    @Html.TextBoxFor(m => m.password, "", new { type = "password", required = "required" })
+                    <div class="placeholder">@Project.Resources.MyText.Password:</div>
+                </div>
+                <div class="input_box">
+                    @Html.TextBoxFor(m => m.fullname, "", new { required = "required" })
+                    <div class="placeholder">@Project.Resources.MyText.Fullname:</div>
+                </div>
+                <div class="input_box">
+                    @Html.TextBoxFor(m => m.email, "", new { required = "required",type="email" })
+                    <div class="placeholder">Email:</div>
+                </div>
+                <div class="input_box">
+                    <p>@Project.Resources.MyText.Gender:</p>
+                    <input type="radio" name="gender" id="gender" value="male" checked>@Project.Resources.MyText.Male
+                    <input type="radio" name="gender" id="gender" value="female">@Project.Resources.MyText.Female
+                </div>
+                <div class="input_box">
+                    <input type="submit" value="@Project.Resources.MyText.Register" class="btn-submit">
+                </div>
+                <div class="guest green">
+                    <p> @Project.Resources.MyText.Guest ?</p> @Html.ActionLink(@Project.Resources.MyText.Click, "Login")
+                </div>
+                <div class="goback">
+                    <a href="@Url.Action("Index","Home")">@Project.Resources.MyText.back</a>
+                </div>
+            }
+        </div>
+        <div class="circle">
+            <ul class="anime">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

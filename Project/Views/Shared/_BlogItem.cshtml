@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Project.Models.viewBlog>
+@using Project.Models
+@if (Model.Count() != 0)
+{
+    HttpCookie cookie = HttpContext.Current.Request.Cookies["Language"];
+    int i = 0;
+    foreach (var item in Model)
+    {
+        string ChangeT = item.title;
+        if(cookie != null && cookie.Value == "en-US")
+        {
+            ChangeT = item.title_en;
+        }
+        if (i % 2 == 0)
+        {
+            <div class="blog-item-even">
+                <a href="@Url.Action("View","Blog",new {id=item.bid,title=UrlEncoder.ToFriendlyUrl(ChangeT) })">
+                    <div class="blog-item-thumbnail">
+                        <img src="~/images/thumbnail/@Url.Content(item.thumbnail)" alt="">
+                    </div>
+                    <div class="blog-item-info">
+                        @{
+                            if (cookie != null && cookie.Value == "en-US")
+                            {
+                                <h2 class="title">@item.title_en</h2>
+                            }
+                            else
+                            {
+                                <h2 class="title">@item.title</h2>
+                            }
+                        }
+                        <p>
+                            @Project.Resources.MyText.By @item.nickname
+                        </p>
+                        <span class="last-time">
+                            @Project.Resources.MyText.Posted @item.created_at
+                        </span>
+                        <div class="duy-tron"></div>
+                        <div class="duy-tron-1"></div>
+                    </div>
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="blog-item-odd">
+                <a href="@Url.Action("View","Blog",new {id=item.bid,title=UrlEncoder.ToFriendlyUrl(ChangeT) })">
+                    <div class="blog-item-info">
+                        @{
+                            if (cookie != null && cookie.Value == "en-US")
+                            {
+                                <h2 class="title">@item.title_en</h2>
+                            }
+                            else
+                            {
+                                <h2 class="title">@item.title</h2>
+                            }
+                        }
+                        <p>
+                            @Project.Resources.MyText.By @item.nickname
+                        </p>
+                        <span class="last-time">
+                            @Project.Resources.MyText.Posted @item.created_at
+                        </span>
+                        <div class="duy-tron"></div>
+                        <div class="duy-tron-1"></div>
+                    </div>
+                    <div class="blog-item-thumbnail">
+                        <img src="~/images/thumbnail/@Url.Content(item.thumbnail)" alt="">
+                    </div>
+                </a>
+            </div>
+        }
+        i++;
+    }
+}

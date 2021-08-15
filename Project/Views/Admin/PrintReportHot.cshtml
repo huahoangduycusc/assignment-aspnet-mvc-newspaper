@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Project.Models.TopicStatistic>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Báo cáo bài viết hot nhất</title>
+    <link rel="stylesheet" href="~/Content/admin.css">
+</head>
+<body>
+    <center><h2>BÁO CÁO BÀI VIẾT HOT NHẤT</h2></center>
+    <table class="table">
+        <tr>
+            <th>
+                Tên
+            </th>
+            <th>
+                Ngày tạo
+            </th>
+            <th>
+                Bình luận
+            </th>
+            <th>
+                Tác giả
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("View", "Article", new { id = item.aid })">@item.title</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.created_at)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.comment)
+                </td>
+                <td>
+                    <a href="@Url.Action("Index","User",new {id=item.uid })">@item.username</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+</body>
+</html>

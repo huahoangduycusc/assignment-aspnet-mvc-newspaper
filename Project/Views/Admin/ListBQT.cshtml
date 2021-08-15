@@ -1,0 +1,75 @@
+﻿@model IPagedList<Project.Models.User>
+
+@{
+    ViewBag.Title = "ListBQT";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="panel-title">Danh sách BQT</div>
+
+<table class="table">
+    <tr>
+        <th>
+            Avatar
+        </th>
+        <th>
+            Username
+        </th>
+        <th>
+            Họ tên
+        </th>
+        <th>
+            Giới tính
+        </th>
+        <th>
+            Chức vụ
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <div class="profile-avatar">
+                    <img src="~/images/profile/@Url.Content(item.avatar)" alt="">
+                </div>
+            </td>
+            <td>
+                <a href="@Url.Action("Index","User",new {id=@item.user_id })">@Html.DisplayFor(modelItem => item.username)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fullname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.gender)
+            </td>
+            <td>
+                @{
+                    if (item.role == "admin")
+                    {
+                        <h2 style="color:#FF5159;font-size:12pt">Administration</h2>
+                    }
+                    if (item.role == "btv")
+                    {
+                        <h2 style="color:green;font-size:12pt">Tổng Biên Tập</h2>
+                    }
+                    if (item.role == "nb")
+                    {
+                        <h2 style="color:DarkOrchid;font-size:12pt">Nhà Báo</h2>
+                    }
+                    if (item.role == "ctv")
+                    {
+                        <h2 style="color:#EA9415;font-size:12pt">Cộng Tác Viên</h2>
+                    }
+
+                }
+            </td>
+        </tr>
+    }
+
+</table>
+
+@Html.PagedListPager(Model, page => Url.Action("ListBQT", "Admin", new { page }))

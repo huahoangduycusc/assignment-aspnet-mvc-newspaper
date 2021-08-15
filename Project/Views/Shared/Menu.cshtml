@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Project.Models.Menu_List>
+
+@if (Model != null)
+{
+    HttpCookie cookie = HttpContext.Current.Request.Cookies["Language"];
+    foreach (var item in Model)
+    {
+        if (cookie != null && cookie.Value == "en-US")
+        {
+            <li><a href="/Home/Category/@item.id">@item.name_en</a></li>
+        }
+        else
+        {
+            <li><a href="/Home/Category/@item.id">@item.name</a></li>
+        }
+    }
+}

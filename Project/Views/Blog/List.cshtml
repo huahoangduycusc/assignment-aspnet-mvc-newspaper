@@ -1,0 +1,53 @@
+﻿@model IPagedList<Project.Models.viewBlog>
+
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@using PagedList;
+@using PagedList.Mvc;
+
+<div class="panel-title">Danh sách Blog</div>
+<table class="table">
+    <tr>
+        <th>
+            Tên
+        </th>
+        <th>
+            Ngày tạo
+        </th>
+        <th>
+            Tác giả
+        </th>
+        <th>
+            Thumbnail
+        </th>
+        <th>Panel</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="@Url.Action("View", "Blog", new { id = item.bid })">@item.title</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created_at)
+            </td>
+            <td>
+                <a href="@Url.Action("Index","User",new {id=item.uid })">@item.nickname</a>
+            </td>
+            <td>
+                <img style="width:100px;" src="~/images/thumbnail/@Url.Content(item.thumbnail)" />
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Blog", new { id = item.bid }, new {@class="btn-warning" })
+                <a href="@Url.Action("Delete","Blog",new {id=item.bid })" class="btn-danger" onclick="return confirm('Bạn có chắc muốn xóa bài viết này?');">Del</a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@Html.PagedListPager(Model, page => Url.Action("List", "Blog", new { page }))

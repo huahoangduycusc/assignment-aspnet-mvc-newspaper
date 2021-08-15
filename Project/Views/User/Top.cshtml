@@ -1,0 +1,95 @@
+﻿@model Project.Models.allTopUser
+
+@{
+    ViewBag.Title = "Top";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*top follow section*@
+@{Html.RenderAction("TopFollow", "User");}
+
+<section class="bg-white">
+    <div class="fit">
+        <div class="col-duy-4">
+            <div class="top-user">
+                <i class="fas fa-crown"></i> @Project.Resources.MyText.CmtWeek
+            </div>
+            <div class="top-user-list">
+                <table class="table-list" cellspacing="0" cellpadding="0">
+                    @{
+                        int counter = 1;
+                        foreach (var item in Model.TopTuan)
+                        {
+                            <tr>
+                                <td class="left">
+                                    <span class="purple">@counter</span>
+                                </td>
+                                <td class="center">
+                                    <img src="~/images/profile/@Url.Content(item.image)" alt="">
+                                    <h3><a href="@Url.Action("Index","User",new {id=item.uid })">@item.username</a></h3>
+                                </td>
+                                <td class="right"><b>Post:</b>@item.post</td>
+                            </tr>
+                            counter++;
+                        }
+                    }
+                </table>
+            </div>
+            <!-- top user list -->
+        </div>
+        <div class="col-duy-4">
+            <div class="top-user">
+                <i class="fas fa-award"></i> @Project.Resources.MyText.CmtMonth
+            </div>
+            <div class="top-user-list">
+                <table class="table-list" cellspacing="0" cellpadding="0">
+                    @{
+                        counter = 1;
+                        foreach (var item in Model.topThang)
+                        {
+                            <tr>
+                                <td class="left">
+                                    <span class="purple">@counter</span>
+                                </td>
+                                <td class="center">
+                                    <img src="~/images/profile/@Url.Content(item.image)" alt="">
+                                    <h3><a href="@Url.Action("Index","User",new {id=item.uid })">@item.username</a></h3>
+                                </td>
+                                <td class="right"><b>Post:</b>@item.post</td>
+                            </tr>
+                            counter++;
+                        }
+                    }
+                </table>
+            </div>
+            <!-- top user list -->
+        </div>
+        <div class="col-duy-4">
+            <div class="top-user">
+                <i class="fas fa-jedi"></i> @Project.Resources.MyText.CmtTop
+            </div>
+            <div class="top-user-list">
+                <table class="table-list" cellspacing="0" cellpadding="0">
+                    @{
+                        counter = 1;
+                        foreach (var item in Model.TopEver)
+                        {
+                            <tr>
+                                <td class="left">
+                                    <span class="purple">@counter</span>
+                                </td>
+                                <td class="center">
+                                    <img src="~/images/profile/@Url.Content(item.image)" alt="">
+                                    <h3><a href="@Url.Action("Index","User",new {id=item.uid })">@item.username</a></h3>
+                                </td>
+                                <td class="right"><b>Post:</b>@item.post</td>
+                            </tr>
+                            counter++;
+                        }
+                    }
+                </table>
+            </div>
+            <!-- top user list -->
+        </div>
+    </div>
+    <!-- fit div -->
+</section>

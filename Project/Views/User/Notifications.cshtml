@@ -1,0 +1,41 @@
+﻿@model Project.Models.Follow_Thongbao
+
+@{
+    ViewBag.Title = "Notifications";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="fit">
+    <div class="col-duy-4">
+    <h2 class="title-highlight">Follow</h2>
+    <div class="list-follow">
+        @if (Model.follwers.Count() != 0)
+        {
+            foreach (var item in Model.follwers)
+            {
+                <div class="list-follow-item">
+                    <a href="@Url.Action("Index","User",new {id=@item.uid })">
+                        <img src="~/images/profile/@Url.Content(item.avatar)" />
+                        <p>@item.nickname</p>
+                    </a>
+                </div>
+            }
+        }
+    </div>
+</div>
+<div class="col-duy-8">
+    <h2 class="title-highlight">Thông báo của bạn</h2>
+    <div class="list-noti">
+        @if(Model.thongbaofollows.Count() != 0)
+        {
+            foreach(var item in Model.thongbaofollows)
+            {
+                <div class="list-noti-item">
+                    @Html.Raw(item.msg)
+                    <p class="times-right">@item.created_at</p>
+                </div>
+            }
+        }
+    </div>
+</div>
+</div>

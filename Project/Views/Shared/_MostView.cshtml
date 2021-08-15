@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Project.Models.baiviet>
+@using Project.Models
+@if (Model != null)
+{
+    HttpCookie cookie = HttpContext.Current.Request.Cookies["Language"];
+    <div class="col-duy-4">
+        <a href="@Url.Action("TopView","Article")"><h2 class="title-highlight">@Project.Resources.MyText.Hot</h2></a>
+        <div class="list">
+            @foreach (var item in Model)
+            {
+                <div class="wrapper">
+                    <div class="wrapper-thumbnail">
+                        <a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })"><img src="~/images/thumbnail/@Url.Content(item.img)" alt=""></a>
+                    </div>
+                    <div class="wrapper-infor">
+                        <a href="@Url.Action("Category","Home",new {id=@item.cid })" class="category-name">
+                            @{
+                                if (cookie != null && cookie.Value == "en-US")
+                                {
+                                    @item.cate_en
+                                }
+                                else
+                                {
+                                    @item.cate
+                                }
+                            }
+                        </a>
+                        <span class="times">@item.day</span>
+                        <h2 class="title">
+                            @{
+                                if (cookie != null && cookie.Value == "en-US")
+                                {
+                                    <a href="@Url.Action("View","Article",new {id=item.aid,title=UrlEncoder.ToFriendlyUrl(item.name_en) })">@item.name_en</a>
+                                }
+                                else
+                                {
+                                    <a href="@Url.Action("View","Article",new {id=item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })">@item.name</a>
+                                }
+                            }
+                        </h2>
+                    </div>
+                </div>
+                <!-- wrapper -->
+            }
+        </div>
+        <!-- list -->
+    </div>
+    <!-- col duy 4 -->
+}

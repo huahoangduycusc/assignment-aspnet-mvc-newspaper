@@ -1,0 +1,175 @@
+﻿@model Project.Models.User
+
+@{
+    ViewBag.Title = "Setting Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="profile">
+    <div class="fit">
+        <div class="profile-avatar">
+            <img src="~/images/profile/@Url.Content(Model.avatar)" alt="">
+        </div>
+        <div class="profile-infor">
+            @{
+                if (Model.role == "admin")
+                {
+                    <h2 style="color:#FF5159;font-size:12pt">@Model.nickname - Administration</h2>
+                }
+                if (Model.role == "btv")
+                {
+                    <h2 style="color:green;font-size:12pt">@Model.nickname - Tổng Biên Tập</h2>
+                }
+                if (Model.role == "nb")
+                {
+                    <h2 style="color:DarkOrchid;font-size:12pt">@Model.nickname - Nhà Báo</h2>
+                }
+                if (Model.role == "ctv")
+                {
+                    <h2 style="color:#EA9415;font-size:12pt">@Model.nickname - Cộng Tác Viên</h2>
+                }
+                if (Model.role == "mem")
+                {
+                    <h2 style="color:#013481;font-size:12pt">@Model.nickname</h2>
+                }
+
+            }
+            <p><i class="fas fa-map-marker"></i> @Model.address</p>
+            <p><i class="fas fa-comment"></i> @Model.post Post</p>
+            <p><i class="fas fa-venus-mars"></i> @Model.gender</p>
+        </div>
+        @if (User.IsInRole("admin") || Session["uid"] != null && Session["uid"].ToString() == Model.user_id.ToString())
+        {
+    <div class="profile-setting">
+        <a href="@Url.Action("Setting","User",new {id=Model.user_id })" class="btn-setting"><i class="fas fa-cog"></i> Thiết lập</a>
+        <a href="@Url.Action("ChangePassword","User")" class="btn-setting"><i class="fas fa-exchange-alt"></i> Đổi mật khẩu</a>
+        <a href="@Url.Action("Index","User",new {id=Model.user_id })" class="btn-setting"><i class="fas fa-undo-alt"></i> Trang cá nhân</a>
+    </div>
+        }
+    </div>
+</div>
+<section class="profile-line">
+    <div class="fit">
+        <div class="col-duy-4">
+            <div class="profile-start">
+                <p><i class="far fa-clock"></i> Gia nhập @Model.timeJoin</p>
+                <p><i class="fas fa-calendar-alt"></i> Sinh thần @Model.birthday</p>
+            </div>
+        </div>
+        <!-- col duy 4 -->
+        <div class="col-duy-8 white-bg">
+            @if(TempData["msg"] != null)
+            {
+                <div class="msg-error">@TempData["msg"]</div>
+            }
+            @if(ViewBag.Msg != null)
+            {
+                <div class="green">@ViewBag.Msg</div>
+            }
+            @using (Html.BeginForm("Setting","User",FormMethod.Post,new {enctype="multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <div class="form-group">
+                FullName
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.fullname, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.fullname, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @if (User.IsInRole("admin"))
+            {
+                <div class="form-group">
+                    Nick Name
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.nickname, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.fullname, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+
+            <div class="form-group">
+                Gender
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.gender, new List<SelectListItem> {
+               new SelectListItem{Text="male",Value="male"},
+               new SelectListItem{Text="female",Value="female"}
+               }, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.gender, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                Birth
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.birthday, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                    @Html.ValidationMessageFor(model => model.birthday, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                Address
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                Email
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                Phone
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                Sở thích
+                <div class="col-md-10">
+                    @Html.TextAreaFor(m => m.favourite, 5, 10, new { @class = "form-control" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                Avatar (Ignore if you don't want to upload new picture)
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.avatar, new { htmlAttributes = new { @class = "form-control", type = "file" } })
+                    @Html.ValidationMessageFor(model => model.avatar, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @if (User.IsInRole("admin"))
+            {
+                <div class="form-group">
+                    Chức vụ
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.role, new List<SelectListItem> {
+                   new SelectListItem{Text="Member",Value="mem"},
+                   new SelectListItem{Text="Cộng tác viên",Value="ctv"},
+                   new SelectListItem{Text="Nhà báo",Value="nb"},
+                   new SelectListItem{Text="Tổng Biên Tập",Value="btv"},
+                   new SelectListItem{Text="Quản trị hệ thống",Value="admin"}
+                   }, new { @class = "form-control" })
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+            }
+        </div>
+        <!-- col duy 8 -->
+    </div>
+</section>

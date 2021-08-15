@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Project.Models.baiviet>
+@using Project.Models
+@if (Model != null)
+{
+    HttpCookie cookie = HttpContext.Current.Request.Cookies["Language"];
+    foreach (var item in Model)
+    {
+        <div class="list-article-item">
+            <div class="list-article-img">
+                <a href="@Url.Action("View","Article",new {id=@item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })"><img src="~/images/thumbnail/@Url.Content(item.img)" alt=""></a>
+            </div>
+            <div class="list-article-infor">
+                <div class="list-article-col-8">
+                    @{
+                        if (cookie != null && cookie.Value == "en-US")
+                        {
+                            <a href="@Url.Action("View","Article",new {id=item.aid,title=UrlEncoder.ToFriendlyUrl(item.name_en) })">@item.name_en</a>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("View","Article",new {id=item.aid,title=UrlEncoder.ToFriendlyUrl(item.name) })">@item.name</a>
+                        }
+                    }
+                </div>
+                <div class="list-article-col-4">
+                    <span>@item.day</span>
+                </div>
+            </div>
+        </div>
+        <!-- list article item -->
+    }
+}

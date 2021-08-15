@@ -1,0 +1,158 @@
+﻿@model Project.Models.User
+@{ 
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@Project.Resources.MyText.Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="~/Content/login.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="icon" href="~/icon/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="~/icon/apple-touch-icon.png" />
+</head>
+<body>
+    <div class="container">
+        <div class="login_form">
+            @using (Html.BeginForm())
+            {
+                <h2>@Project.Resources.MyText.Login</h2>
+                @Html.ValidationMessageFor(m => m.username, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(m => m.password, "", new { @class = "text-danger" })
+                <div class="text-danger">@ViewBag.Msg</div>
+                <div class="input_box">
+                    @Html.TextBoxFor(m => m.username, "", new { required = "required" })
+                    <div class="placeholder">@Project.Resources.MyText.Username:</div>
+                </div>
+                <div class="input_box">
+                    @Html.TextBoxFor(m => m.password, "", new { type = "password", required = "required" })
+                    <div class="placeholder">@Project.Resources.MyText.Password</div>
+                </div>
+                <div class="input_box">
+                    <input type="submit" value="@Project.Resources.MyText.Login" class="btn-submit">
+                </div>
+                <div class="guest">
+                    <p> @Project.Resources.MyText.Guest1 ?</p> <a href="@Url.Action("Register","Home")">@Project.Resources.MyText.Click1</a>
+                    | <p><a href="" class="forgot">@Project.Resources.MyText.forget?</a></p>
+                </div>
+                <div class="goback">
+                    <a href="@Url.Action("Index","Home")">@Project.Resources.MyText.back</a>
+                </div>
+                @ViewBag.Pass
+            }
+        </div>
+        <div class="square">
+            <ul class="anime">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <div class="circle">
+            <ul class="anime">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+    <div class="feedback-container">
+        <div class="feedback-fixed">
+            <div class="feedback-title">@Project.Resources.MyText.forget</div>
+            @using (Html.BeginForm("Index", "Email", FormMethod.Post,new {id="form_submit" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="feedback-msg">
+                    <p id="json"></p>
+                </div>
+                <div class="feedback-txt">
+                    <p>@Project.Resources.MyText.Username</p>
+                    <input type="text" name="user" id="user" placeholder="@Project.Resources.MyText.Username" required>
+                </div>
+                <div class="feedback-txt">
+                    <p>Email</p>
+                    <input type="email" name="email" id="email" placeholder="Email" required>
+                </div>
+                <div class="feedback-submit">
+                    <button type="submit" id="btn_send"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            }
+            <a href="" class="close"><i class="fas fa-times"></i></a>
+        </div>
+        <div class="sign-owner">
+            <p>Design by</p>
+            <img src="~/images/@Url.Content("duy.png")" alt="">
+        </div>
+    </div>
+    <script>
+        var click = document.querySelector(".forgot");
+        var feedback = document.querySelector(".feedback-container");
+        click.addEventListener('click', (e) => {
+            e.preventDefault();
+            $('#json').html('');
+            feedback.classList.toggle("actives");
+        });
+        var fb = document.querySelector(".feedback-fixed");
+        feedback.addEventListener('click', function (e) {
+            var div = e.target;
+            if (div.classList.contains('feedback-container')) {
+                feedback.classList.remove("actives");
+            }
+        });
+        var fb_close = document.querySelector('.close');
+        if (fb_close) {
+            fb_close.addEventListener('click', function (e) {
+                e.preventDefault();
+                feedback.classList.remove("actives");
+            });
+        }
+    </script>
+    <script>
+        var flag = false; // tránh click nhiều lần
+        $('#form_submit').submit(function () {
+            $('#json').html('');
+            if (flag == true) {
+                alert('Please, waiting a moment after the system handling'); // wait
+            }
+            flag = true;
+            $('#btn_send').html('Sending ...');
+            var username = $('#user').val(); // get username
+            var email = $('#email').val(); // get email
+            //alert("Bạn vừa click");
+            $.ajax({
+                url: '/Email/Index',
+                type: 'post',
+                cache: false,
+                data: {
+                    user: username,
+                    email: email
+                },
+                success: function (result) { // success
+                    if (result.msg != "") { // error
+                        $('#json').css('color', 'red');
+                        $('#json').html(result.msg);
+                    }
+                    if (result.success != "") { // success
+                        $('#json').css('color', 'green');
+                        $('#json').html(result.success);
+                    }
+                    flag = false;
+                    $('#btn_send').html('<i class="fas fa-paper-plane"></i>');
+                },
+                error: function () {
+                    alert("Process handle occur error, please try it again !"); // error
+                }
+            });
+            return false;
+        });
+    </script>
+</body>
+</html>

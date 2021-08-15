@@ -1,0 +1,43 @@
+﻿@model Project.Models.Category
+
+@{
+    ViewBag.Title = "Edit Category";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        @if (ViewBag.Msg != null)
+        {
+            <div class="message">@ViewBag.Msg</div>
+        }
+        <div class="form-group">
+            <p>Tên chuyên mục (Tiếng việt)</p>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.category_name, new { htmlAttributes = new { @class = "form-control",required="required" } })
+                @Html.ValidationMessageFor(model => model.category_name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <p>Tên chuyên mục (Tiếng anh)</p>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.category_name_en, new { htmlAttributes = new { @class = "form-control",required="required" } })
+                @Html.ValidationMessageFor(model => model.category_name_en, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "List")
+</div>

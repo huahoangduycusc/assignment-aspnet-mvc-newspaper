@@ -1,0 +1,30 @@
+﻿@model Project.Models.Category
+
+@{
+    ViewBag.Title = "Category";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    <div class="panel-title">Thêm chuyên mục mới</div>
+    <div class="back">
+        @Html.ActionLink("Trở lại", "Index")
+    </div>
+    if (ViewBag.Msg != null)
+    {
+        <div class="message">@ViewBag.Msg</div>
+    }
+    <div class="textbox">
+        <p>Tên chuyên mục (Tiếng việt)</p>
+        @Html.TextBoxFor(m => m.category_name, "", new { @class = "form-control" })
+    </div>
+    <div class="textbox">
+        <p>Tên chuyên mục (Tiếng anh)</p>
+        @Html.TextBoxFor(m => m.category_name_en, "", new { @class = "form-control" })
+    </div>
+    <div class="textbox">
+        <input type="submit" value="Thêm mới" class="btn-submit" />
+    </div>
+}
+

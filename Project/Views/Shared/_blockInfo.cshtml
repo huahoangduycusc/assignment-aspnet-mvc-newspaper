@@ -1,0 +1,45 @@
+﻿@model Project.Models.block
+
+@if(Model != null && Session["uid"] != null)
+{
+    <div class="popup-container">
+            <div class="popup-form">
+                <div class="popup-heading">
+                    <h2>Thông báo</h2>
+                </div>
+                <div class="popup-body">
+                    Bạn bị khóa đến ngày @Model.block_time <br />
+                    Lý do : @Model.block_lydo <br/>
+                    <p>Trong thời gian này bạn không thể bình luận hay nhắn tin cho bất kỳ ai !</p>
+                </div>
+                <div class="popup-end">
+                    <button class="btn-agree">Tôi đã hiểu</button>
+                </div>
+                <div class="popup-close">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+            </div>
+        </div>
+<script>
+    // popup
+    var popup_container = document.querySelector('.popup-container');
+    if (popup_container) {
+        popup_container.addEventListener('click',function(e){
+            var div = e.target.classList;
+            if (div.contains('popup-container') || div.contains('fa-times-circle') || div.contains('btn-agree'))
+        {
+            popup_container.classList.remove('active-pop');
+        }
+    });
+    }
+    function modeOnPopup(state) {
+        if (state == true) {
+            popup_container.classList.add('active-pop');
+        }
+        else {
+            popup_container.classList.remove('active-pop');
+        }
+    }
+    modeOnPopup(true);
+</script>
+}
